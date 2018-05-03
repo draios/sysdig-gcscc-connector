@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[requires]
+python_version = "3"
+
+[dev-packages]
+mamba = "*"
+expects = "*"
+doublex-expects = "==0.7.0rc2"
+
+[packages]
+google-cloud = "*"
+sdcclient = "*"
+"d12baff" = {path = "./vendor/securitycenter-v1alpha3"}
+flask = "*"
+gunicorn = "*"
+google-api-python-client = "*"
+"google-auth-httplib2" = "*"

@@ -1,0 +1,59 @@
+{
+  "falsePositive": false,
+  "fields": [
+    {
+      "key": "proc.name",
+      "value": "touch"
+    },
+    {
+      "key": "proc.pcmdline",
+      "value": "sudo touch baz"
+    },
+    {
+      "key": "user.name",
+      "value": "root"
+    },
+    {
+      "key": "proc.aname[2]",
+      "value": "bash"
+    },
+    {
+      "key": "falco.rule",
+      "value": "Write below binary dir"
+    },
+    {
+      "key": "proc.pname",
+      "value": "sudo"
+    },
+    {
+      "key": "fd.name",
+      "value": "/usr/bin/baz"
+    },
+    {
+      "key": "proc.cmdline",
+      "value": "touch baz"
+    }
+  ],
+  "hostMac": "42:01:0a:9c:00:06",
+  "id": "537089878425440256",
+  "isAggregated": false,
+  "matchedOnDefault": false,
+  "metrics": [
+    null,
+    null,
+    null,
+    null,
+    "42:01:0a:9c:00:06",
+    "instance-docker",
+    null,
+    null,
+    null
+  ],
+  "output": "File below a known binary directory opened for writing (user=root command=touch baz file=/usr/bin/baz parent=sudo pcmdline=sudo touch baz gparent=bash)",
+  "policyId": 3121,
+  "ruleSubtype": null,
+  "ruleType": "RULE_TYPE_FALCO",
+  "severity": 3,
+  "timestamp": 1524580559176584,
+  "version": 1
+}

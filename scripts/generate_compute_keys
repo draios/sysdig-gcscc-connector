@@ -1,0 +1,5 @@
+#!/bin/sh
+
+gcloud iam service-accounts create $COMPUTE_SERVICE_ACCOUNT  --display-name "Service Account for USER"  --project $COMPUTE_PROJECT_ID
+gcloud projects add-iam-policy-binding $COMPUTE_PROJECT_ID --member "serviceAccount:$COMPUTE_SERVICE_ACCOUNT@$COMPUTE_PROJECT_ID.iam.gserviceaccount.com" --role "roles/owner"
+gcloud iam service-accounts keys create $COMPUTE_KEY_LOCATION --iam-account $COMPUTE_SERVICE_ACCOUNT@$COMPUTE_PROJECT_ID.iam.gserviceaccount.com

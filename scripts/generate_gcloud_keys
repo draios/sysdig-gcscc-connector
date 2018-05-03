@@ -1,0 +1,5 @@
+#!/bin/sh
+
+gcloud iam service-accounts create $SERVICE_ACCOUNT  --display-name "Service Account for USER"  --project $PROJECT_ID
+gcloud iam service-accounts keys create $KEY_LOCATION  --iam-account $SERVICE_ACCOUNT@$PROJECT_ID.iam.gserviceaccount.com
+gcloud beta organizations add-iam-policy-binding $ORG_ID --member="serviceAccount:$SERVICE_ACCOUNT@$PROJECT_ID.iam.gserviceaccount.com" --role='roles/securitycenter.editor'

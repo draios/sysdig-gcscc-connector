@@ -1,0 +1,117 @@
+{
+  "alert": {
+    "description": "A shell was used as the entrypoint/exec point into a container with an attached terminal.",
+    "editUrl": null,
+    "id": null,
+    "name": "Policy 3136: Terminal shell in container",
+    "scope": null,
+    "severity": 5
+  },
+  "condition": "count(policyEvent) > 0",
+  "entities": [
+    {
+      "additionalInfo": null,
+      "entity": "",
+      "metricValues": [
+        {
+          "aggregation": "count",
+          "groupAggregation": "none",
+          "metric": "policyEvent",
+          "value": 1
+        }
+      ],
+      "policies": [
+        {
+          "actions": [],
+          "containerScope": true,
+          "createdOn": 1523898811000,
+          "description": "A shell was used as the entrypoint/exec point into a container with an attached terminal.",
+          "enabled": true,
+          "falcoConfiguration": {
+            "fields": [],
+            "onDefault": "DEFAULT_MATCH_EFFECT_NEXT",
+            "ruleNameRegEx": "Terminal shell in container"
+          },
+          "hostScope": true,
+          "id": 3136,
+          "isBuiltin": true,
+          "isManual": true,
+          "modifiedByUserId": 21150,
+          "modifiedOn": 1524066091000,
+          "name": "Terminal shell in container",
+          "notificationChannelIds": [
+            16145,
+            16156
+          ],
+          "policyEventsCount": 3,
+          "severity": 5,
+          "version": 2
+        }
+      ],
+      "policyEvents": [
+        {
+          "containerId": "60a3478041e2",
+          "falsePositive": false,
+          "fields": [
+            {
+              "key": "proc.name",
+              "value": "bash"
+            },
+            {
+              "key": "user.name",
+              "value": "root"
+            },
+            {
+              "key": "container.name",
+              "value": "k8s_wordpress_wordpress-7984c4d898-rfrwl_wp-demo_35b5c3ff-3d9e-11e8-9249-42010a9c0071_0"
+            },
+            {
+              "key": "proc.tty",
+              "value": "34816"
+            },
+            {
+              "key": "falco.rule",
+              "value": "Terminal shell in container"
+            },
+            {
+              "key": "container.id",
+              "value": "60a3478041e2"
+            },
+            {
+              "key": "proc.pname",
+              "value": "runc:[0:PARENT]"
+            },
+            {
+              "key": "proc.cmdline",
+              "value": "bash "
+            }
+          ],
+          "hostMac": "42:01:0a:9c:00:04",
+          "id": "534932085048320000",
+          "isAggregated": false,
+          "matchedOnDefault": false,
+          "metrics": [
+            "gke-demo-default-pool-1af4d30b-716h",
+            "k8s_wordpress_wordpress-7984c4d898-rfrwl_wp-demo_35b5c3ff-3d9e-11e8-9249-42010a9c0071_0"
+          ],
+          "output": "A shell was spawned in a container with an attached terminal (user=root k8s_wordpress_wordpress-7984c4d898-rfrwl_wp-demo_35b5c3ff-3d9e-11e8-9249-42010a9c0071_0 (id=60a3478041e2) shell=bash parent=runc:[0:PARENT] cmdline=bash  terminal=34816)",
+          "policyId": 3136,
+          "ruleSubtype": null,
+          "ruleType": "RULE_TYPE_FALCO",
+          "severity": 5,
+          "timestamp": 1524066096644551,
+          "version": 1
+        }
+      ]
+    }
+  ],
+  "event": {
+    "id": null,
+    "url": "https://secure.sysdig.com/#/events/f:1524066060,t:1524066120"
+  },
+  "resolved": false,
+  "source": "Sysdig Secure",
+  "state": "ACTIVE",
+  "timespan": 60000000,
+  "timestamp": 1524066120000000
+}

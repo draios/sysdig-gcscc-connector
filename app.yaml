@@ -1,0 +1,13 @@
+runtime: custom
+env: flex
+
+env_variables:
+  SYSDIG_TOKEN: c6f6af86-93a5-418b-9d76-1229fcd92378
+  ORG_ID: 534901558763
+  PROJECT_ID: cscc544401558763
+  SECURITY_SERVICE_ACCOUNT_INFO: '{"type": "service_account", "project_id": "", "private_key_id": "", "private_key": "-----BEGIN PRIVATE KEY-----\\n-----END PRIVATE KEY-----\n", "client_email": "", "client_id": "", "auth_uri": "https://accounts.google.com/o/oauth2/auth", "token_uri": "https://accounts.google.com/o/oauth2/token", "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs", "client_x509_cert_url": ""}'
+  COMPUTE_PROJECT_ID: arboreal-logic-197806
+  COMPUTE_ZONE: europe-west3-a
+  COMPUTE_SERVICE_ACCOUNT_INFO: '{"type": "service_account", "project_id": "", "private_key_id": "", "private_key": "-----begin private key-----\\n-----end private key-----\n", "client_email": "", "client_id": "", "auth_uri": "https://accounts.google.com/o/oauth2/auth", "token_uri": "https://accounts.google.com/o/oauth2/token", "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs", "client_x509_cert_url": ""}'
+  WEBHOOK_URL: https://arboreal-logic-198306.appspot.com/events
+  WEBHOOK_AUTHENTICATION_TOKEN: 7a79416ed4d3776b74fcc070275ece208eeef29f
