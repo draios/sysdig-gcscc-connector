@@ -180,3 +180,10 @@ with description(securecscc.CreateFindingFromEvent) as self:
             finding = self.action.run(fixtures.event_falco())
 
             expect(finding).to(have_key('category', category))
+
+        with it('uses only seconds from event time'):
+            event_time = 1526547969874
+
+            finding = self.action.run(fixtures.event_falco())
+
+            expect(finding).to(have_key('event_time', event_time))

@@ -91,9 +91,12 @@ class CreateFindingFromEvent:
         return properties
 
     def _build_finding_from_falco(self, event):
+        event_time = int(event['output_fields']['evt.time']/1000000)
+
         return {
             "source_id": self._settings.source_id(),
             "category": event['rule'],
+            "event_time": event_time,
         }
 
 
