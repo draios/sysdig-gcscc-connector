@@ -201,3 +201,8 @@ with description(securecscc.CreateFindingFromEvent) as self:
 
             finding_id = uuid.UUID(finding['id'])
             expect(finding_id).to(be_an(uuid.UUID))
+
+        with it('uses organization as asset ids'):
+            finding = self.action.run(fixtures.event_falco())
+
+            expect(finding).to(have_key('asset_ids', [self.organization]))

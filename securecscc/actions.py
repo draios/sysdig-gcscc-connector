@@ -102,6 +102,7 @@ class CreateFindingFromEvent:
             "category": event['rule'],
             "event_time": event_time,
             "url": None,
+            "asset_ids": [self._settings.organization()],
         }
 
 
