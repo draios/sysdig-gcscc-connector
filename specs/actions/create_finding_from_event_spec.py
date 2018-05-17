@@ -208,6 +208,13 @@ with description(securecscc.CreateFindingFromEvent) as self:
             expect(finding).to(have_key('asset_ids', [self.organization]))
 
         with context('when building properties'):
+            with it('adds output'):
+                output = "A shell was spawned in a container with an attached terminal (user=root unruffled_hamilton (id=32c415f00958) shell=bash parent=<NA> cmdline=bash  terminal=34816)"
+
+                finding = self.action.run(fixtures.event_falco())
+
+                expect(finding).to(have_key('properties', have_key('summary', output)))
+
             with it('adds priority'):
                 finding = self.action.run(fixtures.event_falco())
 

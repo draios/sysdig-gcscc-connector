@@ -104,7 +104,8 @@ class CreateFindingFromEvent:
             "url": None,
             "asset_ids": [self._settings.organization()],
             "properties": {
-                "priority": event['priority']
+                "priority": event['priority'],
+                "summary": event['output'].replace(event['priority'], '')[19:].strip()
             }
         }
 
