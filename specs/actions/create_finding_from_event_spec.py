@@ -1,12 +1,12 @@
 from mamba import description, it, before, context
-from expects import expect, have_key, end_with, start_with, have_keys, be_none, be_an
+from expects import expect, have_key, end_with, start_with, have_keys, be_none
 from doublex import Spy, when
 from doublex_expects import have_been_called_with
 
 import securecscc
-import uuid
 
 from specs.support import fixtures
+from specs.support.matchers import be_an_uuid
 
 
 with description(securecscc.CreateFindingFromEvent) as self:
@@ -197,10 +197,7 @@ with description(securecscc.CreateFindingFromEvent) as self:
         with it('uses an uuid as id'):
             finding = self.action.run(fixtures.event_falco())
 
-            expect(finding).to(have_key('id'))
-
-            finding_id = uuid.UUID(finding['id'])
-            expect(finding_id).to(be_an(uuid.UUID))
+            expect(finding).to(have_key('id', be_an_uuid()))
 
         with it('uses organization as asset ids'):
             finding = self.action.run(fixtures.event_falco())
