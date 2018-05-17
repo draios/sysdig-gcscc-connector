@@ -1,3 +1,6 @@
+import uuid
+
+
 class CreateFindingFromEvent:
     def __init__(self, settings, gcloud_client, sysdig_client):
         self._settings = settings
@@ -94,6 +97,7 @@ class CreateFindingFromEvent:
         event_time = int(event['output_fields']['evt.time']/1000000)
 
         return {
+            "id": str(uuid.uuid4()),
             "source_id": self._settings.source_id(),
             "category": event['rule'],
             "event_time": event_time,
