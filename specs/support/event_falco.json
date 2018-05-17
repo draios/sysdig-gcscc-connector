@@ -1,0 +1,16 @@
+{
+    "output": "11:06:09.874686373: Notice A shell was spawned in a container with an attached terminal (user=root unruffled_hamilton (id=32c415f00958) shell=bash parent=<NA> cmdline=bash  terminal=34816)",
+    "output_fields": {
+        "container.id": "32c415f00958",
+        "container.name": "unruffled_hamilton",
+        "evt.time": 1526547969874686373,
+        "proc.cmdline": "bash ",
+        "proc.name": "bash",
+        "proc.pname": null,
+        "proc.tty": 34816,
+        "user.name": "root"
+    },
+    "priority": "Notice",
+    "rule": "Terminal shell in container",
+    "time": "2018-05-17T09:06:09.874686373Z"
+}

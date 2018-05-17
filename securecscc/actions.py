@@ -5,13 +5,20 @@ class CreateFindingFromEvent:
         self._sysdig_client = sysdig_client
 
     def run(self, event):
-        finding = self._build_finding_from(event)
+        if self._comes_from_sysdig_secure(event):
+            finding = self._build_finding_from_sysdig_secure(event)
+        else:
+            finding = self._build_finding_from_falco(event)
+
         self._gcloud_client.create_finding(self._settings.organization(),
                                            finding)
 
         return finding
 
-    def _build_finding_from(self, event):
+    def _comes_from_sysdig_secure(self, event):
+        return 'version' in event
+
+    def _build_finding_from_sysdig_secure(self, event):
         event_time = int(event['timestamp']/1000000)
 
         return {
@@ -82,6 +89,11 @@ class CreateFindingFromEvent:
             properties.update(metadata)
 
         return properties
+
+    def _build_finding_from_falco(self, event):
+        return {
+            "source_id": self._settings.source_id(),
+        }
 
 
 class CreateCSCCNotificationChannel:

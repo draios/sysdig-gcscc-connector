@@ -200,3 +200,9 @@ with description(securecscc.CreateFindingFromEvent) as self:
             expect(self.gcloud_client.create_finding)\
                 .to(have_been_called_with(self.organization,
                                           have_key('properties', have_keys('summary', 'severity', 'rule.type'))))
+
+    with context('when creating from falco'):
+        with it('uses the source_id assigned to us from Google'):
+            finding = self.action.run(fixtures.event_falco())
+
+            expect(finding).to(have_key('source_id', self.settings.source_id()))
