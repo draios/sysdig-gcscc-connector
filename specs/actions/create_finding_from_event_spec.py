@@ -173,3 +173,10 @@ with description(securecscc.CreateFindingFromEvent) as self:
             finding = self.action.run(fixtures.event_falco())
 
             expect(finding).to(have_key('source_id', self.settings.source_id()))
+
+        with it('uses the rule as category'):
+            category = 'Terminal shell in container'
+
+            finding = self.action.run(fixtures.event_falco())
+
+            expect(finding).to(have_key('category', category))

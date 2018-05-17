@@ -93,6 +93,7 @@ class CreateFindingFromEvent:
     def _build_finding_from_falco(self, event):
         return {
             "source_id": self._settings.source_id(),
+            "category": event['rule'],
         }
 
 
