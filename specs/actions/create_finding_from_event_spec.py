@@ -1,5 +1,5 @@
 from mamba import description, it, before, context
-from expects import expect, have_key, end_with, start_with, have_keys
+from expects import expect, have_key, end_with, start_with, have_keys, be_none
 from doublex import Spy, when
 from doublex_expects import have_been_called_with
 
@@ -187,3 +187,8 @@ with description(securecscc.CreateFindingFromEvent) as self:
             finding = self.action.run(fixtures.event_falco())
 
             expect(finding).to(have_key('event_time', event_time))
+
+        with it('does not set any url'):
+            finding = self.action.run(fixtures.event_falco())
+
+            expect(finding).to(have_key('url', be_none))

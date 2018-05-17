@@ -97,6 +97,7 @@ class CreateFindingFromEvent:
             "source_id": self._settings.source_id(),
             "category": event['rule'],
             "event_time": event_time,
+            "url": None,
         }
 
 
