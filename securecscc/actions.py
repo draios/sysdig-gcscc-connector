@@ -103,6 +103,9 @@ class CreateFindingFromEvent:
             "event_time": event_time,
             "url": None,
             "asset_ids": [self._settings.organization()],
+            "properties": {
+                "priority": event['priority']
+            }
         }
 
 

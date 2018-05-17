@@ -206,3 +206,9 @@ with description(securecscc.CreateFindingFromEvent) as self:
             finding = self.action.run(fixtures.event_falco())
 
             expect(finding).to(have_key('asset_ids', [self.organization]))
+
+        with context('when building properties'):
+            with it('adds priority'):
+                finding = self.action.run(fixtures.event_falco())
+
+                expect(finding).to(have_key('properties', have_key('priority', 'Notice')))
