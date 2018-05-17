@@ -94,7 +94,7 @@ class CreateFindingFromEvent:
         return properties
 
     def _build_finding_from_falco(self, event):
-        event_time = int(event['output_fields']['evt.time']/1000000)
+        event_time = int(event['output_fields']['evt.time']/1000000000)
 
         return {
             "id": str(uuid.uuid4()),
