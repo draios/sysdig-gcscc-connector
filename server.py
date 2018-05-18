@@ -7,7 +7,7 @@ import securecscc
 app = Flask(__name__)
 
 factory = securecscc.ApplicationFactory()
-ACTION = factory.create_finding_from_event_action()
+ACTION = factory.create_finding_from_sysdig_secure_event_action()
 
 settings = factory.settings()
 

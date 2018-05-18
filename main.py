@@ -20,7 +20,7 @@ def _logger():
 def main():
     application_factory = ApplicationFactory()
     sysdig_secure_client = application_factory.sysdig_secure_client()
-    action = application_factory.create_finding_from_event_action()
+    action = application_factory.create_finding_from_sysdig_secure_event_action()
 
     logger = _logger()
 
