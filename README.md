@@ -45,7 +45,7 @@ json_include_output_property: true
 program_output:
   enabled: true
   keep_alive: false
-  program: "curl -d @- -X POST --header 'Content-Type: application/json' http://127.0.0.1:5000/"
+  program: "curl -d @- -X POST --header 'Content-Type: application/json' http://127.0.0.1:8080/"
 ```
 
 And make sure you are running Falco with the --unbuffered flag.
@@ -63,19 +63,19 @@ docker build -t sysdig/sysdig-cscc .
 ### Running Webbook server
 
 ```
-docker run -p 8080:8080 sysdig/sysdig-cscc
+docker run -p 8080:8080 sysdig/sysdig-cscc webhook_server
 ```
 
 ### Running Falco server
 
 ```
-docker run -p 5000:5000 sysdig/sysdig-cscc gunicorn -b 0.0.0.0:5000 falco_server:app
+docker run -p 8080:8080 sysdig/sysdig-cscc falco_server
 ```
 
 ### Running Polling runner
 
 ```
-docker run sysdig/sysdig-cscc python polling_runner.py
+docker run sysdig/sysdig-cscc polling_runner
 ```
 
 ## Google App Engine Deployment

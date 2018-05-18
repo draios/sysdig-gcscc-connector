@@ -12,4 +12,5 @@ RUN pipenv install --system --deploy
 ADD . /app
 
 EXPOSE 8080
-CMD ["gunicorn", "-b", "0.0.0.0:8080", "webhook_server:app"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
+CMD ["webhook_server"]
