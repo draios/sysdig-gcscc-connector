@@ -60,16 +60,22 @@ We have deployed this integration in Google App Engine, using Docker support in 
 docker build -t sysdig/sysdig-cscc .
 ```
 
-### Running WebHook
+### Running Webbook server
 
 ```
 docker run -p 8080:8080 sysdig/sysdig-cscc
 ```
 
-### Console
+### Running Falco server
 
 ```
-docker run sysdig/sysdig-cscc python main.py
+docker run -p 5000:5000 sysdig/sysdig-cscc gunicorn -b 0.0.0.0:5000 falco_server:app
+```
+
+### Running Polling runner
+
+```
+docker run sysdig/sysdig-cscc python polling_runner.py
 ```
 
 ## Google App Engine Deployment

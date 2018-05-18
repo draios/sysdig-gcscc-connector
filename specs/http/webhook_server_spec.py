@@ -2,7 +2,7 @@ import http
 import json
 
 import securecscc
-import server
+import webhook_server
 
 from mamba import description, context, it, before
 from expects import expect, equal
@@ -14,7 +14,7 @@ from specs.support import fixtures
 
 with description('HTTP Webhook') as self:
     with before.each:
-        self.app = server.app.test_client()
+        self.app = webhook_server.app.test_client()
 
         settings = securecscc.Settings()
         self.authorization_headers = {'Authorization': settings.webhook_authentication_token()}
@@ -27,7 +27,7 @@ with description('HTTP Webhook') as self:
 
     with context('POST /events'):
         with before.each:
-            server.ACTION = Spy(securecscc.CreateFindingFromEvent)
+            webhook_server.ACTION = Spy(securecscc.CreateFindingFromEvent)
 
         with it('returns a 201'):
             result = self.app.post('/events',
@@ -39,7 +39,7 @@ with description('HTTP Webhook') as self:
 
         with it('returns new created finding'):
             finding = {'id': 'irrelevant id'}
-            when(server.ACTION).run(fixtures.event_in_webhook()).returns(finding)
+            when(webhook_server.ACTION).run(fixtures.event_in_webhook()).returns(finding)
 
             result = self.app.post('/events',
                                    data=fixtures.payload_from_webhook(),

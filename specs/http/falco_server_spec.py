@@ -2,7 +2,7 @@ import http
 import json
 
 import securecscc
-import falco
+import falco_server
 
 from mamba import description, context, it, before
 from expects import expect, equal
@@ -14,13 +14,13 @@ from specs.support import fixtures
 
 with description('HTTP Webhook') as self:
     with before.each:
-        self.app = falco.app.test_client()
+        self.app = falco_server.app.test_client()
 
         settings = securecscc.Settings()
 
     with context('POST /'):
         with before.each:
-            falco.ACTION = Spy(securecscc.CreateFindingFromEvent)
+            falco_server.ACTION = Spy(securecscc.CreateFindingFromEvent)
 
         with it('returns a 201'):
             result = self.app.post('/',
@@ -31,7 +31,7 @@ with description('HTTP Webhook') as self:
 
         with it('returns new created finding'):
             finding = {'id': 'irrelevant id'}
-            when(falco.ACTION).run(fixtures.event_falco()).returns(finding)
+            when(falco_server.ACTION).run(fixtures.event_falco()).returns(finding)
 
             result = self.app.post('/',
                                    data=fixtures.payload_from_falco(),
