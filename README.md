@@ -37,7 +37,7 @@ alarm is raised.
 
 #### Falco configuration
 
-Make sure that your falco configuration (/etc/falco/falco.yaml) has those values:
+Falco must be configured with the following values in the /etc/falco/falco.yaml file:
 
 ```
 json_include_output_property: true
