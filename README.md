@@ -16,16 +16,39 @@ Check the following list for environment variables used:
 * COMPUTE_ZONE: Kubernetes cluster instances are expected in this compute zone
 * COMPUTE_SERVICE_ACCOUNT_INFO: Raw credentials for accessing to compute API
 
-## Console runner
+## Runners
+
+### Polling runner
 
 Console runner is a long time process which queries policy events in Sysdig Secure
 every minute and creates new findings in Security Command Center.
 
-## Webhook runner
+### Webhook server
 
 The webhook runner is a Flask application which receives an HTTP POST request
 when a new event is created. This webhook should be configured in Sysdig Secure
 notification settings.
+
+### Falco integration
+
+We can also configure the connector for receiving events from Falco. This
+runner is also a Flask application which receives an HTTP POST request when an
+alarm is raised.
+
+#### Falco configuration
+
+Make sure that your falco configuration (/etc/falco/falco.yaml) has those values:
+
+```
+json_include_output_property: true
+
+program_output:
+  enabled: true
+  keep_alive: false
+  program: "curl -d @- -X POST --header 'Content-Type: application/json' http://127.0.0.1:5000/"
+```
+
+And make sure you are running Falco with the --unbuffered flag.
 
 ## Docker support
 
