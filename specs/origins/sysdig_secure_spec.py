@@ -19,24 +19,6 @@ with description(origins.SysdigSecure) as self:
 
         self.organization = self.settings.organization()
 
-    with it('allows on premise hosts for event url'):
-        finding = self.mapper.create_from(fixtures.event())
-
-        expect(finding).to(have_key('url', start_with(self.settings.sysdig_url_prefix())))
-
-    with it('extracts url path from security event'):
-        finding = self.mapper.create_from(fixtures.event())
-
-        expect(finding).to(have_key('url', end_with('/#/events/f:1523007251,t:1523007371/*/*?viewAs=list')))
-
-    with it('retrieves category name from sysdig client'):
-        category_name = 'a category name'
-        when(self.sysdig_client).find_policy_by_id(59).returns(category_name)
-
-        finding = self.mapper.create_from(fixtures.event())
-
-        expect(finding).to(have_key('category', category_name))
-
     with it('uses id from security event'):
         finding = self.mapper.create_from(fixtures.event())
 
@@ -51,6 +33,26 @@ with description(origins.SysdigSecure) as self:
         finding = self.mapper.create_from(fixtures.event())
 
         expect(finding).to(have_key('event_time', 1523007311))
+
+    with it('retrieves category name from sysdig client'):
+        category_name = 'a category name'
+        when(self.sysdig_client).find_policy_by_id(59).returns(category_name)
+
+        finding = self.mapper.create_from(fixtures.event())
+
+        expect(finding).to(have_key('category', category_name))
+
+    with context('when building the URL'):
+        with it('allows setting an url for on premise instances'):
+            finding = self.mapper.create_from(fixtures.event())
+
+            expect(finding).to(have_key('url', start_with(self.settings.sysdig_url_prefix())))
+
+        with it('extracts url path from security event'):
+            finding = self.mapper.create_from(fixtures.event())
+
+            expect(finding).to(have_key('url', end_with('/#/events/f:1523007251,t:1523007371/*/*?viewAs=list')))
+
 
     with context('when building properties'):
         with it('adds output'):
@@ -71,7 +73,7 @@ with description(origins.SysdigSecure) as self:
             expect(finding).to(have_key('properties', have_key('rule.type',
                                                                'RULE_TYPE_FALCO')))
 
-        with it('adds container metadata'):
+        with it('retrieves container metadata'):
             container_id = '57c1820a87f1'
             when(self.sysdig_client).find_container_metadata_from_container_id(container_id).returns({'container.stuff': 'FOO'})
 
