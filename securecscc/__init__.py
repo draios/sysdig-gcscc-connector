@@ -3,4 +3,4 @@ from securecscc.infrastructure import SysdigSecureClient, GoogleCloudClient
 from securecscc.application_factory import ApplicationFactory
 from securecscc.settings import Settings
 from securecscc.credentials import Credentials
-from securecscc.finding_mappers import FalcoFindingMapper
+from securecscc.finding_mappers import FalcoFindingMapper, SysdigSecureFindingMapper
