@@ -2,15 +2,16 @@ from mamba import description, it, before, context
 from expects import expect, have_key, be_none
 
 import securecscc
+from securecscc import origins
 
 from specs.support import fixtures
 from specs.support.matchers import be_an_uuid
 
 
-with description(securecscc.FalcoFindingMapper) as self:
+with description(origins.Falco) as self:
     with before.each:
         self.settings = securecscc.Settings()
-        self.mapper = securecscc.FalcoFindingMapper(self.settings)
+        self.mapper = origins.Falco(self.settings)
 
     with it('uses the source_id assigned to us from Google'):
         finding = self.mapper.create_from(fixtures.event_falco())

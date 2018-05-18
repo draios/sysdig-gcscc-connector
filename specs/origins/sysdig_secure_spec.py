@@ -3,18 +3,19 @@ from expects import expect, have_key, end_with, start_with, have_keys
 from doublex import Stub, when
 
 import securecscc
+from securecscc import origins
 
 from specs.support import fixtures
 
 
-with description(securecscc.SysdigSecureFindingMapper) as self:
+with description(origins.SysdigSecure) as self:
     with before.each:
         self.settings = securecscc.Settings()
         self.sysdig_client = Stub(securecscc.SysdigSecureClient)
         self.gcloud_client = Stub(securecscc.GoogleCloudClient)
-        self.mapper = securecscc.SysdigSecureFindingMapper(self.settings,
-                                                           self.sysdig_client,
-                                                           self.gcloud_client)
+        self.mapper = origins.SysdigSecure(self.settings,
+                                           self.sysdig_client,
+                                           self.gcloud_client)
 
         self.organization = self.settings.organization()
 

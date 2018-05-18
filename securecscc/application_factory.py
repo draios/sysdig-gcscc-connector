@@ -4,7 +4,7 @@ from securecscc.actions import CreateFindingFromEvent, CreateCSCCNotificationCha
 from securecscc.infrastructure import SysdigSecureClient, GoogleCloudClient
 from securecscc.settings import Settings
 from securecscc.credentials import Credentials
-from securecscc.finding_mappers import FalcoFindingMapper, SysdigSecureFindingMapper
+from securecscc import origins
 
 
 class ApplicationFactory:
@@ -12,13 +12,13 @@ class ApplicationFactory:
     def create_finding_from_sysdig_secure_event_action(self):
         return CreateFindingFromEvent(self.settings(),
                                       self.google_cloud_client(),
-                                      self._sysdig_secure_finding_mapper())
+                                      self._sysdig_secure())
 
     @lru_cache(maxsize=1)
     def create_finding_from_falco_alarm_action(self):
         return CreateFindingFromEvent(self.settings(),
                                       self.google_cloud_client(),
-                                      self._falco_finding_mapper())
+                                      self._falco())
 
     @lru_cache(maxsize=1)
     def create_cscc_notification_channel_action(self):
@@ -38,14 +38,14 @@ class ApplicationFactory:
         return Settings()
 
     @lru_cache(maxsize=1)
-    def _falco_finding_mapper(self):
-        return FalcoFindingMapper(self.settings())
+    def _falco(self):
+        return origins.Falco(self.settings())
 
     @lru_cache(maxsize=1)
-    def _sysdig_secure_finding_mapper(self):
-        return SysdigSecureFindingMapper(self.settings(),
-                                         self.sysdig_secure_client(),
-                                         self.google_cloud_client())
+    def _sysdig_secure(self):
+        return origins.SysdigSecure(self.settings(),
+                                    self.sysdig_secure_client(),
+                                    self.google_cloud_client())
 
     @lru_cache(maxsize=1)
     def _credentials(self):

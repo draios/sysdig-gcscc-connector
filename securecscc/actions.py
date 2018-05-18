@@ -1,11 +1,11 @@
 class CreateFindingFromEvent:
-    def __init__(self, settings, gcloud_client, finding_mapper):
+    def __init__(self, settings, gcloud_client, origin):
         self._settings = settings
         self._gcloud_client = gcloud_client
-        self._finding_mapper = finding_mapper
+        self._origin = origin
 
     def run(self, event):
-        finding = self._finding_mapper.create_from(event)
+        finding = self._origin.create_from(event)
         self._gcloud_client.create_finding(self._settings.organization(),
                                            finding)
 
