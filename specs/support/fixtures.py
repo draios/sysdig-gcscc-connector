@@ -26,6 +26,10 @@ def payload_from_webhook():
     return _read_file('event_webhook.json')
 
 
+def payload_from_falco():
+    return _read_file('event_falco.json')
+
+
 def event_in_webhook():
     payload = json.loads(payload_from_webhook())
 
