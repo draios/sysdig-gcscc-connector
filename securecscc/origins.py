@@ -25,11 +25,22 @@ class Falco:
             "container.id": event['output_fields']['container.id']
         }
 
-        kubernetes_pod_name = event['output_fields'].get('k8s.pod.name')
-        if kubernetes_pod_name is not None:
-            properties['kubernetes.pod.name'] = kubernetes_pod_name
+        self._add_to_properties_if_exists(properties,
+                                          'container.name',
+                                          event,
+                                          'container.name')
+
+        self._add_to_properties_if_exists(properties,
+                                          'kubernetes.pod.name',
+                                          event,
+                                          'k8s.pod.name')
 
         return properties
+
+    def _add_to_properties_if_exists(self, properties, key, event, key_from_event):
+        value = event['output_fields'].get(key_from_event)
+        if value is not None:
+            properties[key] = value
 
 
 class SysdigSecure:
