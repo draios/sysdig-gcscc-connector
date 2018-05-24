@@ -22,6 +22,10 @@ def event_falco():
     return json.loads(_read_file('event_falco.json'))
 
 
+def event_falco_k8s():
+    return json.loads(_read_file('event_falco_k8s.json'))
+
+
 def payload_from_webhook():
     return _read_file('event_webhook.json')
 

@@ -64,3 +64,9 @@ with description(origins.Falco) as self:
             finding = self.mapper.create_from(fixtures.event_falco())
 
             expect(finding).to(have_key('properties', have_key('container.id', '32c415f00958')))
+
+    with context('when creating from falco with kubernetes integration enabled'):
+        with it('adds pod name to properties'):
+            finding = self.mapper.create_from(fixtures.event_falco_k8s())
+
+            expect(finding).to(have_key('properties', have_key('kubernetes.pod.name', 'falco-event-generator-6fd89678f9-cdkvz')))

@@ -15,12 +15,21 @@ class Falco:
             "event_time": event_time,
             "url": None,
             "asset_ids": [self._settings.organization()],
-            "properties": {
-                "priority": event['priority'],
-                "summary": event['output'].replace(event['priority'], '')[19:].strip(),
-                "container.id": event['output_fields']['container.id']
-            }
+            "properties": self._properties(event)
         }
+
+    def _properties(self, event):
+        properties = {
+            "priority": event['priority'],
+            "summary": event['output'].replace(event['priority'], '')[19:].strip(),
+            "container.id": event['output_fields']['container.id']
+        }
+
+        kubernetes_pod_name = event['output_fields'].get('k8s.pod.name')
+        if kubernetes_pod_name is not None:
+            properties['kubernetes.pod.name'] = kubernetes_pod_name
+
+        return properties
 
 
 class SysdigSecure:

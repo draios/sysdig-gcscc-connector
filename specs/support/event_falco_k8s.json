@@ -1,0 +1,16 @@
+{
+    "output": "10:22:15.576767292: Notice Unexpected setuid call by non-sudo, non-root program (user=bin cur_uid=2 parent=event_generator command=event_generator  uid=root) k8s.pod=falco-event-generator-6fd89678f9-cdkvz container=1c76f49f40b4",
+    "output_fields": {
+        "container.id": "1c76f49f40b4",
+        "evt.arg.uid": "root",
+        "evt.time": 1527157335576767292,
+        "k8s.pod.name": "falco-event-generator-6fd89678f9-cdkvz",
+        "proc.cmdline": "event_generator ",
+        "proc.pname": "event_generator",
+        "user.name": "bin",
+        "user.uid": 2
+    },
+    "priority": "Notice",
+    "rule": "Non sudo setuid",
+    "time": "2018-05-24T10:22:15.576767292Z"
+}
