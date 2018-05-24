@@ -17,7 +17,8 @@ class Falco:
             "asset_ids": [self._settings.organization()],
             "properties": {
                 "priority": event['priority'],
-                "summary": event['output'].replace(event['priority'], '')[19:].strip()
+                "summary": event['output'].replace(event['priority'], '')[19:].strip(),
+                "container.id": event['output_fields']['container.id']
             }
         }
 

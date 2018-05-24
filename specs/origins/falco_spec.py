@@ -59,3 +59,8 @@ with description(origins.Falco) as self:
             finding = self.mapper.create_from(fixtures.event_falco())
 
             expect(finding).to(have_key('properties', have_key('priority', 'Notice')))
+
+        with it('adds container id'):
+            finding = self.mapper.create_from(fixtures.event_falco())
+
+            expect(finding).to(have_key('properties', have_key('container.id', '32c415f00958')))
