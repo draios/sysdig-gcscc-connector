@@ -1,0 +1,60 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: sysdig-gcscc-connector
+  labels:
+    name: sysdig-gcscc-connector-deployment
+    app: sysdig-gcscc-connector-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+     name: sysdig-gcscc-connector
+     role: sysdig-gcscc-connector
+     app: sysdig-gcscc-connector-app
+  template:
+    spec:
+      containers:
+        - name: sysdig-gcscc-connector
+          image: nestorsalceda/sysdig-gcscc-connector
+          args: [ "falco_server" ]
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: SYSDIG_TOKEN
+              value: c6f6af86-93a5-418b-9d76-1229fcd92378
+            - name: ORG_ID
+              value: 534901558763
+            - name: PROJECT_ID
+              value: cscc544401558763
+            - name: SECURITY_SERVICE_ACCOUNT_INFO
+              value: '{"type": "service_account", "project_id": "", "private_key_id": "", "private_key": "-----BEGIN PRIVATE KEY-----\\n-----END PRIVATE KEY-----\n", "client_email": "", "client_id": "", "auth_uri": "https://accounts.google.com/o/oauth2/auth", "token_uri": "https://accounts.google.com/o/oauth2/token", "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs", "client_x509_cert_url": ""}'
+            - name: COMPUTE_PROJECT_ID
+              value: arboreal-logic-197806
+            - name: COMPUTE_ZONE
+              value: europe-west3-a
+            - name: COMPUTE_SERVICE_ACCOUNT_INFO
+              value: '{"type": "service_account", "project_id": "", "private_key_id": "", "private_key": "-----begin private key-----\\n-----end private key-----\n", "client_email": "", "client_id": "", "auth_uri": "https://accounts.google.com/o/oauth2/auth", "token_uri": "https://accounts.google.com/o/oauth2/token", "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs", "client_x509_cert_url": ""}'
+            - name: WEBHOOK_URL
+              value: https://arboreal-logic-198306.appspot.com/events
+            - name: WEBHOOK_AUTHENTICATION_TOKEN
+              value: 7a79416ed4d3776b74fcc070275ece208eeef29f
+    metadata:
+      labels:
+        name: sysdig-gcscc-connector
+        role: sysdig-gcscc-connector
+        app: sysdig-gcscc-connector-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sysdig-gcscc-connector
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    name: sysdig-gcscc-connector
+    app: sysdig-gcscc-connector-app
+    role: sysdig-gcscc-connector
