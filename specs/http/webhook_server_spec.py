@@ -12,7 +12,7 @@ from doublex import Spy, when
 from specs.support import fixtures
 
 
-with description('HTTP Webhook') as self:
+with description('Sysdig Secure HTTP Webhook') as self:
     with before.each:
         self.app = webhook_server.app.test_client()
 

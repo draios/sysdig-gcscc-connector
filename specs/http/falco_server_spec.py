@@ -12,11 +12,12 @@ from doublex import Spy, when
 from specs.support import fixtures
 
 
-with description('HTTP Webhook') as self:
+with description('Falco HTTP Webhook') as self:
     with before.each:
         self.app = falco_server.app.test_client()
 
         settings = securecscc.Settings()
+        self.authorization_headers = {'Authorization': settings.webhook_authentication_token()}
 
     with context('POST /'):
         with before.each:
@@ -25,7 +26,8 @@ with description('HTTP Webhook') as self:
         with it('returns a 201'):
             result = self.app.post('/',
                                    data=fixtures.payload_from_falco(),
-                                   content_type='application/json')
+                                   content_type='application/json',
+                                   headers=self.authorization_headers)
 
             expect(result.status_code).to(equal(http.client.CREATED))
 
@@ -35,6 +37,24 @@ with description('HTTP Webhook') as self:
 
             result = self.app.post('/',
                                    data=fixtures.payload_from_falco(),
-                                   content_type='application/json')
+                                   content_type='application/json',
+                                   headers=self.authorization_headers)
 
             expect(json.loads(result.data)).to(equal(finding))
+
+        with context('when authentication header is not present'):
+            with it('returns a 403'):
+                result = self.app.post('/',
+                                       data=fixtures.payload_from_webhook(),
+                                       content_type='application/json')
+
+                expect(result.status_code).to(equal(http.client.FORBIDDEN))
+
+        with context('when authentication token does not match'):
+            with it('returns a 403'):
+                result = self.app.post('/',
+                                       data=fixtures.payload_from_webhook(),
+                                       content_type='application/json',
+                                       headers={'Authorization': 'CSCC foobar'})
+
+                expect(result.status_code).to(equal(http.client.FORBIDDEN))

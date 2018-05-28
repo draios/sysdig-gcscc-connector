@@ -1,6 +1,7 @@
 import http
 
 from flask import Flask, jsonify, request
+from flask_utils import webhook_authentication_required
 
 import securecscc
 
@@ -13,6 +14,7 @@ settings = factory.settings()
 
 
 @app.route('/', methods=['POST'])
+@webhook_authentication_required(settings.webhook_authentication_token())
 def create_finding():
     raw = request.get_json()
 
