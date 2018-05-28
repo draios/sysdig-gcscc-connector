@@ -1,6 +1,7 @@
 import http
 
 from flask import Flask, jsonify, request
+from flask_utils import webhook_authentication_required
 
 import securecscc
 
@@ -25,23 +26,14 @@ def hello():
 
 
 @app.route('/events', methods=['POST'])
+@webhook_authentication_required(settings.webhook_authentication_token())
 def create_finding():
-    if not _is_authorized(request):
-        return jsonify({'message': 'Not authorized'}), http.client.FORBIDDEN
-
     raw = request.get_json()
     events = raw['entities'][0]['policyEvents']
 
     result = [ACTION.run(event) for event in events]
 
     return jsonify(result), http.client.CREATED
-
-
-def _is_authorized(request):
-    if 'Authorization' not in request.headers:
-        return False
-
-    return request.headers['Authorization'] == settings.webhook_authentication_token()
 
 
 if __name__ == '__main__':
