@@ -5,6 +5,8 @@ from flask import jsonify, request, views
 
 
 class HealthView(views.View):
+    methods = ['GET']
+
     def dispatch_request(self):
         return jsonify({
             'message': 'Application is running',
