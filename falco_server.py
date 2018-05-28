@@ -1,11 +1,12 @@
 import http
 
 from flask import Flask, jsonify, request
-from flask_utils import webhook_authentication_required
+from flask_utils import webhook_authentication_required, HealthView
 
 import securecscc
 
 app = Flask(__name__)
+app.add_url_rule('/health', view_func=HealthView.as_view('health'))
 
 factory = securecscc.ApplicationFactory()
 ACTION = factory.create_finding_from_falco_alarm_action()

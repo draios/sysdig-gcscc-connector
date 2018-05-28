@@ -19,9 +19,9 @@ with description('Sysdig Secure HTTP Webhook') as self:
         settings = securecscc.Settings()
         self.authorization_headers = {'Authorization': settings.webhook_authentication_token()}
 
-    with context('GET /'):
+    with context('GET /health'):
         with it('is alive'):
-            result = self.app.get('/')
+            result = self.app.get('/health')
 
             expect(result.status_code).to(equal(http.client.OK))
 

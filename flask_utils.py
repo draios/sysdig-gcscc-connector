@@ -1,7 +1,15 @@
 import http
 from functools import wraps
 
-from flask import jsonify, request
+from flask import jsonify, request, views
+
+
+class HealthView(views.View):
+    def dispatch_request(self):
+        return jsonify({
+            'message': 'Application is running',
+            'success': True
+        })
 
 
 def webhook_authentication_required(authentication_token):
