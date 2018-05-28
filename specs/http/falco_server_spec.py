@@ -19,12 +19,12 @@ with description('Falco HTTP Webhook') as self:
         settings = securecscc.Settings()
         self.authorization_headers = {'Authorization': settings.webhook_authentication_token()}
 
-    with context('POST /'):
+    with context('POST /events'):
         with before.each:
             falco_server.ACTION = Spy(securecscc.CreateFindingFromEvent)
 
         with it('returns a 201'):
-            result = self.app.post('/',
+            result = self.app.post('/events',
                                    data=fixtures.payload_from_falco(),
                                    content_type='application/json',
                                    headers=self.authorization_headers)
@@ -35,7 +35,7 @@ with description('Falco HTTP Webhook') as self:
             finding = {'id': 'irrelevant id'}
             when(falco_server.ACTION).run(fixtures.event_falco()).returns(finding)
 
-            result = self.app.post('/',
+            result = self.app.post('/events',
                                    data=fixtures.payload_from_falco(),
                                    content_type='application/json',
                                    headers=self.authorization_headers)
@@ -44,7 +44,7 @@ with description('Falco HTTP Webhook') as self:
 
         with context('when authentication header is not present'):
             with it('returns a 403'):
-                result = self.app.post('/',
+                result = self.app.post('/events',
                                        data=fixtures.payload_from_webhook(),
                                        content_type='application/json')
 
@@ -52,7 +52,7 @@ with description('Falco HTTP Webhook') as self:
 
         with context('when authentication token does not match'):
             with it('returns a 403'):
-                result = self.app.post('/',
+                result = self.app.post('/events',
                                        data=fixtures.payload_from_webhook(),
                                        content_type='application/json',
                                        headers={'Authorization': 'CSCC foobar'})

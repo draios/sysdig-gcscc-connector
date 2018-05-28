@@ -13,7 +13,7 @@ ACTION = factory.create_finding_from_falco_alarm_action()
 settings = factory.settings()
 
 
-@app.route('/', methods=['POST'])
+@app.route('/events', methods=['POST'])
 @webhook_authentication_required(settings.webhook_authentication_token())
 def create_finding():
     raw = request.get_json()
