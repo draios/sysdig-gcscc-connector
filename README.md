@@ -47,10 +47,11 @@ json_include_output_property: true
 program_output:
   enabled: true
   keep_alive: false
-  program: "curl -d @- -X POST --header 'Content-Type: application/json' http://127.0.0.1:8080/"
+  program: "curl -d @- -X POST --header 'Content-Type: application/json' --header 'Authorization: WEBHOOK_AUTHENTICATION_TOKEN' http://WEBHOOK_URL/events"
 ```
 
-And make sure you are running Falco with the --unbuffered flag.
+Replace WEBHOOK_AUTHENTICATION_TOKEN and WEBHOOK_URL with your settings and
+make sure you are running Falco with the --unbuffered flag.
 
 ## Docker support
 
