@@ -1,3 +1,26 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: sysdig-gcscc-connector
+data:
+  org_id: "534901558763"
+  project_id: cscc544401558763
+  compute_project_id : arboreal-logic-197806
+  compute_zone: europe-west3-a
+  webhook_url: https://arboreal-logic-198306.appspot.com/events
+---
+kind: Secret
+apiVersion: v1
+metadata:
+  name: sysdig-gcscc-connector
+type: Opaque
+data:
+  sysdig_token: YzZmNmFmODYtOTNhNS00MThiLTlkNzYtMTIyOWZjZDkyMzc4Cg==
+  webhook_authentication_token: N2E3OTQxNmVkNGQzNzc2Yjc0ZmNjMDcwMjc1ZWNlMjA4ZWVlZjI5Zgo=
+  compute_service_account_info: J3sidHlwZSI6ICJzZXJ2aWNlX2FjY291bnQiLCAicHJvamVjdF9pZCI6ICIiLCAicHJpdmF0ZV9rZXlfaWQiOiAiIiwgInByaXZhdGVfa2V5IjogIi0tLS0tYmVnaW4gcHJpdmF0ZSBrZXktLS0tLVxcbi0tLS0tZW5kIHByaXZhdGUga2V5LS0tLS1cbiIsICJjbGllbnRfZW1haWwiOiAiIiwgImNsaWVudF9pZCI6ICIiLCAiYXV0aF91cmkiOiAiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tL28vb2F1dGgyL2F1dGgiLCAidG9rZW5fdXJpIjogImh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbS9vL29hdXRoMi90b2tlbiIsICJhdXRoX3Byb3ZpZGVyX3g1MDlfY2VydF91cmwiOiAiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vb2F1dGgyL3YxL2NlcnRzIiwgImNsaWVudF94NTA5X2NlcnRfdXJsIjogIiJ9Jwo=
+  security_service_account_info: J3sidHlwZSI6ICJzZXJ2aWNlX2FjY291bnQiLCAicHJvamVjdF9pZCI6ICIiLCAicHJpdmF0ZV9rZXlfaWQiOiAiIiwgInByaXZhdGVfa2V5IjogIi0tLS0tQkVHSU4gUFJJVkFURSBLRVktLS0tLVxcbi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS1cbiIsICJjbGllbnRfZW1haWwiOiAiIiwgImNsaWVudF9pZCI6ICIiLCAiYXV0aF91cmkiOiAiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tL28vb2F1dGgyL2F1dGgiLCAidG9rZW5fdXJpIjogImh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbS9vL29hdXRoMi90b2tlbiIsICJhdXRoX3Byb3ZpZGVyX3g1MDlfY2VydF91cmwiOiAiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vb2F1dGgyL3YxL2NlcnRzIiwgImNsaWVudF94NTA5X2NlcnRfdXJsIjogIiJ9Jwo=
+---
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
@@ -23,23 +46,50 @@ spec:
               protocol: TCP
           env:
             - name: SYSDIG_TOKEN
-              value: c6f6af86-93a5-418b-9d76-1229fcd92378
+              valueFrom:
+                secretKeyRef:
+                  name: sysdig-gcscc-connector
+                  key: sysdig_token
             - name: ORG_ID
-              value: 534901558763
+              valueFrom:
+                configMapKeyRef:
+                  name: sysdig-gcscc-connector
+                  key: org_id
             - name: PROJECT_ID
-              value: cscc544401558763
+              valueFrom:
+                configMapKeyRef:
+                  name: sysdig-gcscc-connector
+                  key: project_id
             - name: SECURITY_SERVICE_ACCOUNT_INFO
-              value: '{"type": "service_account", "project_id": "", "private_key_id": "", "private_key": "-----BEGIN PRIVATE KEY-----\\n-----END PRIVATE KEY-----\n", "client_email": "", "client_id": "", "auth_uri": "https://accounts.google.com/o/oauth2/auth", "token_uri": "https://accounts.google.com/o/oauth2/token", "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs", "client_x509_cert_url": ""}'
+              valueFrom:
+                secretKeyRef:
+                  name: sysdig-gcscc-connector
+                  key: security_service_account_info
             - name: COMPUTE_PROJECT_ID
-              value: arboreal-logic-197806
+              valueFrom:
+                configMapKeyRef:
+                  name: sysdig-gcscc-connector
+                  key: compute_project_id
             - name: COMPUTE_ZONE
-              value: europe-west3-a
+              valueFrom:
+                configMapKeyRef:
+                  name: sysdig-gcscc-connector
+                  key: compute_zone
             - name: COMPUTE_SERVICE_ACCOUNT_INFO
-              value: '{"type": "service_account", "project_id": "", "private_key_id": "", "private_key": "-----begin private key-----\\n-----end private key-----\n", "client_email": "", "client_id": "", "auth_uri": "https://accounts.google.com/o/oauth2/auth", "token_uri": "https://accounts.google.com/o/oauth2/token", "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs", "client_x509_cert_url": ""}'
+              valueFrom:
+                secretKeyRef:
+                  name: sysdig-gcscc-connector
+                  key: compute_service_account_info
             - name: WEBHOOK_URL
-              value: https://arboreal-logic-198306.appspot.com/events
+              valueFrom:
+                configMapKeyRef:
+                  name: sysdig-gcscc-connector
+                  key: webhook_url
             - name: WEBHOOK_AUTHENTICATION_TOKEN
-              value: 7a79416ed4d3776b74fcc070275ece208eeef29f
+              valueFrom:
+                secretKeyRef:
+                  name: sysdig-gcscc-connector
+                  key: webhook_authentication_token
     metadata:
       labels:
         name: sysdig-gcscc-connector
