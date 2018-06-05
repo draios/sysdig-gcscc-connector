@@ -15,6 +15,8 @@ Check the following list for environment variables used:
 * COMPUTE_PROJECT_ID: Kubernetes cluster instances are expected in this project
 * COMPUTE_ZONE: Kubernetes cluster instances are expected in this compute zone
 * COMPUTE_SERVICE_ACCOUNT_INFO: Raw credentials for accessing to compute API
+* WEBHOOK_URL: URL where Sysdig Secure will POST events. Not needed for Falco integration.
+* WEBHOOK_AUTHENTICATION_TOKEN: Token used for authenticate in webhook servers. Applies to Sysdig Secure and Falco.
 
 ## Runners
 
