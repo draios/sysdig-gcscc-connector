@@ -108,3 +108,22 @@ You can see logs with:
 ```
 gcloud app logs tail -s default
 ```
+
+## Kubernetes Deployment
+
+We have included a file for helping you to deploy connector in your Kubernetes
+cluster.
+
+Take a look to deployment.yaml file and adapt ConfigMaps and Secrets to your
+needs. Remember that Secrets must be encoded using base64.
+
+Once you have configured with your seetings, you can deploy with the following
+command:
+
+```
+kubectl create -f deployment.yaml
+```
+
+And our server will be listening to alerts in the following URL:
+
+http://sysdig-gcscc-connector.default.svc.cluster.local:8080/events
