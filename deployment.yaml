@@ -39,7 +39,7 @@ spec:
     spec:
       containers:
         - name: sysdig-gcscc-connector
-          image: nestorsalceda/sysdig-gcscc-connector
+          image: sysdig/sysdig-gcscc-connector
           args: [ "falco_server" ]
           ports:
             - containerPort: 8080
