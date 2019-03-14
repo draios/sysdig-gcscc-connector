@@ -14,8 +14,7 @@ doublex-expects = "==0.7.0rc2"
 [packages]
 google-cloud = "*"
 sdcclient = "*"
-"d12baff" = {path = "./vendor/securitycenter-v1alpha3"}
 flask = "*"
 gunicorn = "*"
 google-api-python-client = "*"
-"google-auth-httplib2" = "*"
+google-cloud-securitycenter = "*"
