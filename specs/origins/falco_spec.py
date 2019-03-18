@@ -16,7 +16,7 @@ with description(origins.Falco) as self:
     with it('uses Falco as source'):
         finding = self.mapper.create_from(fixtures.event_falco())
 
-        expect(finding.source).to(equal(models.Finding.SOURCE_FALCO))
+        expect(finding.source).to(equal(self.settings.source()))
 
     with it('uses the rule as category'):
         category = 'Terminal shell in container'

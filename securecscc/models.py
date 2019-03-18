@@ -5,9 +5,6 @@ from google.protobuf import timestamp_pb2, struct_pb2
 
 
 class Finding(object):
-    SOURCE_FALCO = 'Falco'
-    SOURCE_SYSDIG_SECURE = 'Sysdig Secure'
-
     def __init__(self, **kwargs):
         self.finding_id = kwargs.get('finding_id', uuid.uuid4().hex)
         self.source = kwargs['source']

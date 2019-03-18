@@ -7,7 +7,7 @@ class Falco(object):
 
     def create_from(self, event):
         return models.Finding(
-            source=models.Finding.SOURCE_FALCO,
+            source=self._settings.source(),
             category=event['rule'],
             event_time=int(event['output_fields']['evt.time']/1000000000),
             #resource_name=self._sysdig_client.project()
@@ -30,7 +30,7 @@ class SysdigSecure(object):
 
         return models.Finding(
             finding_id=event['id'],
-            source=models.Finding.SOURCE_SYSDIG_SECURE,
+            source=self._settings.source(),
             category=self._sysdig_client.find_policy_by_id(event['policyId']),
             event_time=event_time,
             #resource_name=self._sysdig_client.project()
