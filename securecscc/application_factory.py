@@ -7,7 +7,7 @@ from securecscc.credentials import Credentials
 from securecscc import origins
 
 
-class ApplicationFactory:
+class ApplicationFactory(object):
     @lru_cache(maxsize=1)
     def create_finding_from_sysdig_secure_event_action(self):
         return CreateFindingFromEvent(self.settings(),

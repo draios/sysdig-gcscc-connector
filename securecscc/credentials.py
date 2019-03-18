@@ -2,7 +2,7 @@ import os
 import json
 
 
-class Credentials:
+class Credentials(object):
     def sysdig_token(self):
         return os.environ['SYSDIG_TOKEN']
 

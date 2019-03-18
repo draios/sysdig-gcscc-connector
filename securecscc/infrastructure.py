@@ -4,7 +4,6 @@ import json
 import sdcclient
 import requests
 
-import googleapiclient.discovery
 from google.cloud import securitycenter
 from google.oauth2 import service_account
 

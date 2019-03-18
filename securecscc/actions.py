@@ -1,4 +1,4 @@
-class CreateFindingFromEvent:
+class CreateFindingFromEvent(object):
     def __init__(self, settings, gcloud_client, origin):
         self._settings = settings
         self._gcloud_client = gcloud_client
@@ -11,7 +11,7 @@ class CreateFindingFromEvent:
         return finding
 
 
-class CreateCSCCNotificationChannel:
+class CreateCSCCNotificationChannel(object):
     def __init__(self, settings, sysdig_client):
         self._settings = settings
         self._sysdig_client = sysdig_client
