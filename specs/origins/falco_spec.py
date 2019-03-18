@@ -2,7 +2,7 @@ from mamba import description, it, before, context
 from expects import expect, be_none, have_len, equal, be_below_or_equal
 
 import securecscc
-from securecscc import origins, models
+from securecscc import origins
 
 from specs.support import fixtures
 from specs.support.matchers import be_an_uuid

@@ -1,9 +1,9 @@
-from mamba import description, it, before, context, _it, _context
+from mamba import description, it, before, context, _context
 from expects import expect, have_key, end_with, start_with, have_keys, have_len, equal, be_below_or_equal
 from doublex import Stub, when
 
 import securecscc
-from securecscc import origins, models
+from securecscc import origins
 
 from specs.support import fixtures
 
@@ -58,7 +58,6 @@ with description(origins.SysdigSecure) as self:
             finding = self.mapper.create_from(fixtures.event())
 
             expect(finding.url).to(end_with('/#/events/f:1523007251,t:1523007371/*/*?viewAs=list'))
-
 
     with it('adds output'):
         output = "Sensitive file opened for reading by non-trusted program (user=root program=ftest command=ftest -i 25200 -a exfiltration file=/etc/shadow parent=docker-containe gparent=docker-containe ggparent=dockerd gggparent=systemd)"
