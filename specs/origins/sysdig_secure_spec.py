@@ -1,5 +1,5 @@
-from mamba import description, it, before, context
-from expects import expect, have_key, end_with, start_with, have_keys
+from mamba import description, it, before, context, _it, _context
+from expects import expect, have_key, end_with, start_with, have_keys, have_len, equal, be_below_or_equal
 from doublex import Stub, when
 
 import securecscc
@@ -19,20 +19,26 @@ with description(origins.SysdigSecure) as self:
 
         self.organization = self.settings.organization()
 
-    with it('uses id from security event'):
+    with context('when checking the finding_id'):
+        with it('uses id from security event'):
+            finding = self.mapper.create_from(fixtures.event())
+
+            expect(finding.finding_id).to(equal('530491201430929408'))
+
+        with it('uses a shorter value than allowed by Google'):
+            finding = self.mapper.create_from(fixtures.event())
+
+            expect(finding.finding_id).to(have_len(be_below_or_equal(32)))
+
+    with it('uses Sysdig Secure as source'):
         finding = self.mapper.create_from(fixtures.event())
 
-        expect(finding).to(have_key('id', '530491201430929408'))
-
-    with it('uses the source_id assigned to us from Google'):
-        finding = self.mapper.create_from(fixtures.event())
-
-        expect(finding).to(have_key('source_id', self.settings.source_id()))
+        expect(finding.source).to(equal(origins.Finding.SOURCE_SYSDIG_SECURE))
 
     with it('uses only seconds from event time'):
         finding = self.mapper.create_from(fixtures.event())
 
-        expect(finding).to(have_key('event_time', 1523007311))
+        expect(finding.event_time).to(equal(1523007311))
 
     with it('retrieves category name from sysdig client'):
         category_name = 'a category name'
@@ -40,48 +46,46 @@ with description(origins.SysdigSecure) as self:
 
         finding = self.mapper.create_from(fixtures.event())
 
-        expect(finding).to(have_key('category', category_name))
+        expect(finding.category).to(equal(category_name))
 
     with context('when building the URL'):
         with it('allows setting an url for on premise instances'):
             finding = self.mapper.create_from(fixtures.event())
 
-            expect(finding).to(have_key('url', start_with(self.settings.sysdig_url_prefix())))
+            expect(finding.url).to(start_with(self.settings.sysdig_url_prefix()))
 
         with it('extracts url path from security event'):
             finding = self.mapper.create_from(fixtures.event())
 
-            expect(finding).to(have_key('url', end_with('/#/events/f:1523007251,t:1523007371/*/*?viewAs=list')))
+            expect(finding.url).to(end_with('/#/events/f:1523007251,t:1523007371/*/*?viewAs=list'))
 
 
-    with context('when building properties'):
-        with it('adds output'):
-            output = "Sensitive file opened for reading by non-trusted program (user=root program=ftest command=ftest -i 25200 -a exfiltration file=/etc/shadow parent=docker-containe gparent=docker-containe ggparent=dockerd gggparent=systemd)"
+    with it('adds output'):
+        output = "Sensitive file opened for reading by non-trusted program (user=root program=ftest command=ftest -i 25200 -a exfiltration file=/etc/shadow parent=docker-containe gparent=docker-containe ggparent=dockerd gggparent=systemd)"
 
-            finding = self.mapper.create_from(fixtures.event())
+        finding = self.mapper.create_from(fixtures.event())
 
-            expect(finding).to(have_key('properties', have_key('summary', output)))
+        expect(finding.summary).to(equal(output))
 
-        with it('adds severity'):
-            finding = self.mapper.create_from(fixtures.event())
+    with it('adds severity'):
+        finding = self.mapper.create_from(fixtures.event())
 
-            expect(finding).to(have_key('properties', have_key('severity', 4)))
+        expect(finding.severity).to(equal(4))
 
-        with it('adds rule type'):
-            finding = self.mapper.create_from(fixtures.event())
+    with it('adds rule type'):
+        finding = self.mapper.create_from(fixtures.event())
 
-            expect(finding).to(have_key('properties', have_key('rule.type',
-                                                               'RULE_TYPE_FALCO')))
+        expect(finding.rule_type).to(equal('RULE_TYPE_FALCO'))
 
-        with it('retrieves container metadata'):
-            container_id = '57c1820a87f1'
-            when(self.sysdig_client).find_container_metadata_from_container_id(container_id).returns({'container.stuff': 'FOO'})
+    with it('retrieves container metadata'):
+        container_id = '57c1820a87f1'
+        when(self.sysdig_client).find_container_metadata_from_container_id(container_id).returns({'container.stuff': 'FOO'})
 
-            finding = self.mapper.create_from(fixtures.event())
+        finding = self.mapper.create_from(fixtures.event())
 
-            expect(finding).to(have_key('properties', have_key('container.stuff', 'FOO')))
+        expect(finding.container_metadata).to(have_key('container.stuff', 'FOO'))
 
-    with context('when filling asset ids'):
+    with _context('when filling asset ids'):
         with context('when filling container image'):
             with before.each:
                 self. container_id = '57c1820a87f1'
@@ -139,7 +143,7 @@ with description(origins.SysdigSecure) as self:
 
                     expect(finding).to(have_key('asset_ids', [self.organization]))
 
-    with context('when receving a host event'):
+    with _context('when receving a host event'):
         with before.each:
             self.mac = "42:01:0a:9c:00:06"
 
