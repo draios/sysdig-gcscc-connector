@@ -7,7 +7,6 @@ import requests
 import googleapiclient.discovery
 from google.cloud import securitycenter
 from google.oauth2 import service_account
-from google.protobuf import timestamp_pb2, struct_pb2
 
 
 class GoogleCloudClient:
@@ -16,24 +15,10 @@ class GoogleCloudClient:
     def __init__(self, credentials):
         self._credentials = credentials
 
-    def create_finding(self, organization, finding):
-        source_finding = {
-            'id': finding['id'],
-            'category': finding['category'],
-            'asset_ids': finding['asset_ids'],
-            'source_id': finding['source_id'],
-            'event_time': timestamp_pb2.Timestamp(seconds=finding['event_time']),
-            'url': finding['url'],
-            'properties': {
-                'fields': {self._replace_dots(key): struct_pb2.Value(string_value=str(value)) for key, value in finding.get('properties', {}).items()}
-            }
-        }
-
-        return self._security_client.create_finding(organization,
-                                                    source_finding)
-
-    def _replace_dots(self, value):
-        return value.replace('.', '_')
+    def create_finding(self, finding):
+        return self._security_client.create_finding(finding.source,
+                                                    finding.finding_id,
+                                                    finding.to_google_cloud_security_center())
 
     @property
     @lru_cache(maxsize=1)

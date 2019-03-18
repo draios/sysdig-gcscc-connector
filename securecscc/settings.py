@@ -8,6 +8,9 @@ class Settings:
     def organization(self):
         return 'organizations/{}'.format(os.environ['ORG_ID'])
 
+    def source(self):
+        return 'organizations/{}/sources/{}'.format(os.environ['ORG_ID'], os.environ['SOURCE_ID'])
+
     def project(self):
         return os.environ['COMPUTE_PROJECT_ID']
 

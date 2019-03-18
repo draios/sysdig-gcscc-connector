@@ -26,4 +26,4 @@ with description(securecscc.CreateFindingFromEvent) as self:
         self.action.run(fixtures.event())
 
         expect(self.gcloud_client.create_finding)\
-            .to(have_been_called_with(self.settings.organization(), finding))
+            .to(have_been_called_with(finding))
