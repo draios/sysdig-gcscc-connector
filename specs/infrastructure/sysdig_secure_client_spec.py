@@ -46,23 +46,6 @@ with description(securecscc.SysdigSecureClient) as self:
 
                 expect(host).to(be_none)
 
-    with context('when finding a container image from container id'):
-        with it('returns the container image'):
-            container_id = 'f8dfc7daf23f'
-            container_image = 'gcr.io/google-containers/prometheus-to-sd@sha256:5831390762c790b0375c202579fd41dd5f40c71950f7538adbe14b0c16f35d56'
-
-            host = self.client.find_container_image_from_container_id(container_id)
-
-            expect(host).to(equal(container_image))
-
-        with context('and does not exist'):
-            with it('returns None'):
-                non_existent_container_id = 'inexistent container id'
-
-                host = self.client.find_container_image_from_container_id(non_existent_container_id)
-
-                expect(host).to(be_none)
-
     with context('when finding container metadata from container id'):
         with context('and metadata is found'):
             with before.all:

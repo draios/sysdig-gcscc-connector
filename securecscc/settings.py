@@ -1,7 +1,7 @@
 import os
 
 
-class Settings:
+class Settings(object):
     def source_id(self):
         return 'SYSDIG'
 
@@ -10,12 +10,6 @@ class Settings:
 
     def source(self):
         return 'organizations/{}/sources/{}'.format(os.environ['ORG_ID'], os.environ['SOURCE_ID'])
-
-    def project(self):
-        return os.environ['COMPUTE_PROJECT_ID']
-
-    def zone(self):
-        return os.environ['COMPUTE_ZONE']
 
     def sysdig_url_prefix(self):
         return os.environ.get('SYSDIG_URL_PREFIX', 'https://secure.sysdig.com')

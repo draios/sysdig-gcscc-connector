@@ -1,5 +1,5 @@
-from mamba import description, it, before, context, _context
-from expects import expect, have_key, end_with, start_with, have_keys, have_len, equal, be_below_or_equal
+from mamba import description, it, before, context
+from expects import expect, have_key, end_with, start_with, have_len, equal, be_below_or_equal
 from doublex import Stub, when
 
 import securecscc

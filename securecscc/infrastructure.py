@@ -83,12 +83,6 @@ class SysdigSecureClient(object):
 
         return {raw['d'][0]: raw['d'][1] for raw in (response[1]['data'])}
 
-    def find_container_image_from_container_id(self, container_id):
-        metrics = [{"id": "container.id"}, {"id": "container.image"}]
-        images = self._get_data_and_transform_to_dict(metrics)
-
-        return images.get(container_id)
-
     def find_container_metadata_from_container_id(self, container_id):
         response = self._sysdig_secure_client.get_data(self._container_metadata_metrics(),
                                                        -self._MINUTE,
