@@ -9,7 +9,7 @@ from google.cloud import securitycenter
 from google.oauth2 import service_account
 
 
-class GoogleCloudClient:
+class GoogleCloudClient(object):
     _CREDENTIAL_SCOPES = ['https://www.googleapis.com/auth/cloud-platform']
 
     def __init__(self, credentials):
@@ -49,7 +49,7 @@ class GoogleCloudClient:
                                                credentials=credentials)
 
 
-class SysdigSecureClient:
+class SysdigSecureClient(object):
     _MINUTE = 60
     _PAGING = {'from': 0, 'to': 200}
 

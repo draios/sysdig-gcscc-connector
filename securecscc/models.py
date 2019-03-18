@@ -26,15 +26,23 @@ class Finding(object):
 
     def to_google_cloud_security_center(self):
         return {
-            'category': self.category,
             'state': securitycenter.enums.Finding.State.ACTIVE,
-            'resource_name': self.resource_name,
+            'category': self.category,
             'event_time': timestamp_pb2.Timestamp(seconds=self.event_time),
             'external_uri': self.url,
-            'source_properties': {
-                #self._replace_dots(key): struct_pb2.Value(string_value=str(value)) for key, value in self.get('properties', {}).items()
-            }
+            'resource_name': self.resource_name,
+            'source_properties': self._source_properties()
         }
 
-    def _replace_dots(self, value):
-        return value.replace('.', '_')
+    def _source_properties(self):
+        source_properties = {}
+        properties = ['priority', 'summary', 'container_id', 'container_name',
+                      'kubernetes_pod_name', 'severity', 'rule_type']
+
+        for name in properties:
+            value = getattr(self, name)
+            if value is not None:
+                source_properties[name] = \
+                    struct_pb2.Value(string_value=str(value))
+
+        return source_properties
