@@ -49,9 +49,11 @@ with description(origins.Falco) as self:
             expect(finding.finding_id).to(have_len(be_below_or_equal(32)))
 
     with it('has a resource name empty'):
+        organization = self.settings.organization()
+
         finding = self.mapper.create_from(fixtures.event_falco())
 
-        expect(finding.resource_name).to(be_none)
+        expect(finding.resource_name).to(equal('//cloudresourcemanager.googleapis.com/{}'.format(organization)))
 
     with it('adds output'):
         output = "A shell was spawned in a container with an attached terminal (user=root unruffled_hamilton (id=32c415f00958) shell=bash parent=<NA> cmdline=bash  terminal=34816)"

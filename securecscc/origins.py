@@ -10,13 +10,16 @@ class Falco(object):
             source=self._settings.source(),
             category=event['rule'],
             event_time=int(event['output_fields']['evt.time']/1000000000),
-            #resource_name=self._sysdig_client.project()
+            resource_name=self._resource_name(),
             priority=event['priority'],
             summary=event['output'].replace(event['priority'], '')[19:].strip(),
             container_id=event['output_fields']['container.id'],
             container_name=event['output_fields'].get('container.name'),
             kubernetes_pod_name=event['output_fields'].get('k8s.pod.name')
         )
+
+    def _resource_name(self):
+        return '//cloudresourcemanager.googleapis.com/{}'.format(self._settings.organization())
 
 
 class SysdigSecure(object):
