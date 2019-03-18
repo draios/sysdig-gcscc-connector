@@ -2,7 +2,7 @@ from mamba import description, it, before, context
 from expects import expect, be_none, have_len, equal, be_below_or_equal
 
 import securecscc
-from securecscc import origins
+from securecscc import origins, models
 
 from specs.support import fixtures
 from specs.support.matchers import be_an_uuid
@@ -16,7 +16,7 @@ with description(origins.Falco) as self:
     with it('uses Falco as source'):
         finding = self.mapper.create_from(fixtures.event_falco())
 
-        expect(finding.source).to(equal(origins.Finding.SOURCE_FALCO))
+        expect(finding.source).to(equal(models.Finding.SOURCE_FALCO))
 
     with it('uses the rule as category'):
         category = 'Terminal shell in container'

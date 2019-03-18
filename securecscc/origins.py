@@ -1,28 +1,4 @@
-import uuid
-
-
-class Finding(object):
-    SOURCE_FALCO = 'Falco'
-    SOURCE_SYSDIG_SECURE = 'SysdigSecure'
-
-    def __init__(self, **kwargs):
-        self.finding_id = kwargs.get('finding_id', uuid.uuid4().hex)
-        self.source = kwargs['source']
-        self.category = kwargs['category']
-        self.event_time = kwargs['event_time']
-
-        self.url = kwargs.get('url')
-        self.resource_name = kwargs.get('resource_name')
-
-        # Properties not present in all findings
-        self.priority = kwargs.get('priority')
-        self.summary = kwargs.get('summary')
-        self.container_id = kwargs.get('container_id')
-        self.container_name = kwargs.get('container_name')
-        self.kubernetes_pod_name = kwargs.get('kubernetes_pod_name')
-        self.severity = kwargs.get('severity')
-        self.rule_type = kwargs.get('rule_type')
-        self.container_metadata = kwargs.get('container_metadata', {})
+from securecscc import models
 
 
 class Falco(object):
@@ -30,8 +6,8 @@ class Falco(object):
         self._settings = settings
 
     def create_from(self, event):
-        return Finding(
-            source=Finding.SOURCE_FALCO,
+        return models.Finding(
+            source=models.Finding.SOURCE_FALCO,
             category=event['rule'],
             event_time=int(event['output_fields']['evt.time']/1000000000),
             #resource_name=self._sysdig_client.project()
@@ -52,9 +28,9 @@ class SysdigSecure(object):
     def create_from(self, event):
         event_time = int(event['timestamp']/1000000)
 
-        return Finding(
+        return models.Finding(
             finding_id=event['id'],
-            source=Finding.SOURCE_SYSDIG_SECURE,
+            source=models.Finding.SOURCE_SYSDIG_SECURE,
             category=self._sysdig_client.find_policy_by_id(event['policyId']),
             event_time=event_time,
             #resource_name=self._sysdig_client.project()

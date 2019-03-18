@@ -3,7 +3,7 @@ from expects import expect, have_key, end_with, start_with, have_keys, have_len,
 from doublex import Stub, when
 
 import securecscc
-from securecscc import origins
+from securecscc import origins, models
 
 from specs.support import fixtures
 
@@ -33,7 +33,7 @@ with description(origins.SysdigSecure) as self:
     with it('uses Sysdig Secure as source'):
         finding = self.mapper.create_from(fixtures.event())
 
-        expect(finding.source).to(equal(origins.Finding.SOURCE_SYSDIG_SECURE))
+        expect(finding.source).to(equal(models.Finding.SOURCE_SYSDIG_SECURE))
 
     with it('uses only seconds from event time'):
         finding = self.mapper.create_from(fixtures.event())
