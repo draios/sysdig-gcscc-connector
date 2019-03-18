@@ -30,23 +30,17 @@ class GoogleCloudClient(object):
         return \
             securitycenter.SecurityCenterClient(credentials=scoped_credentials)
 
-    def get_instance_id_from_hostname(self, project, zone, hostname):
-        response = self._compute_engine_client.instances()\
-            .list(project=project, zone=zone, fields="items(id,name)")\
-            .execute()
-        instances = {item['name']: item['id'] for item in response['items']}
+    def get_resource_name_from_hostname(self, organization, hostname):
+        response = self._security_client.list_assets(
+            organization,
+            filter_='security_center_properties.resource_type = "google.compute.instance"'
+        )
 
-        return instances.get(hostname)
+        for instance in response:
+            if instance.asset.resource_properties['name'].string_value == hostname:
+                return instance.asset.security_center_properties.resource_name
 
-    @property
-    @lru_cache(maxsize=1)
-    def _compute_engine_client(self):
-        credentials = service_account.Credentials \
-            .from_service_account_info(self._credentials.compute_service_account_info())
-
-        return googleapiclient.discovery.build('compute',
-                                               'v1',
-                                               credentials=credentials)
+        return None
 
 
 class SysdigSecureClient(object):

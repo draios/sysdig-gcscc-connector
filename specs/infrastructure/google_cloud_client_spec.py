@@ -25,13 +25,12 @@ with description(securecscc.GoogleCloudClient) as self:
         dt = datetime.utcnow()
         return int((dt - datetime.utcfromtimestamp(0)).total_seconds())
 
-    with _it('retrieves id from hostname'):
-        project = 'arboreal-logic-197906'
-        zone = 'europe-west3-a'
-        hostname = 'gke-demo-default-pool-1af4d30b-hnbq'
+    with it('retrieves id from hostname'):
+        hostname = 'gke-sysdig-work-default-pool-a1022875-j81z'
 
-        instance_id = self.client.get_instance_id_from_hostname(project,
-                                                                zone,
-                                                                hostname)
+        instance_id = self.client.get_resource_name_from_hostname(
+            self.settings.organization(),
+            hostname
+        )
 
-        expect(instance_id).to(equal('6739927742716024409'))
+        expect(instance_id).to(equal('//compute.googleapis.com/projects/sysdig-204815/zones/europe-west3-a/instances/96321670362563295'))

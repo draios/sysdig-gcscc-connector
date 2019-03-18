@@ -6,6 +6,7 @@ import securecscc
 from securecscc import origins
 
 from specs.support import fixtures
+from specs.support.matchers import be_the_organization_resource_name
 
 
 with description(origins.SysdigSecure) as self:
@@ -84,84 +85,57 @@ with description(origins.SysdigSecure) as self:
 
         expect(finding.container_metadata).to(have_key('container.stuff', 'FOO'))
 
-    with _context('when filling asset ids'):
-        with context('when filling container image'):
-            with before.each:
-                self. container_id = '57c1820a87f1'
+    with context('when choosing the resource name'):
+        with before.each:
+            self.mac = "06:90:90:7f:15:ea"
+            self.hostname = 'any hostname'
 
-            with it('queries sysdigcloud for its image id and adds to asset ids'):
-                container_image = 'gcr.io/google-containers/prometheus-to-sd@sha256:5831390762c790b0375c202579fd41dd5f40c71950f7538adbe14b0c16f35d56'
-                when(self.sysdig_client).find_container_image_from_container_id(self.container_id).returns(container_image)
+        with it('queries google for its resource_name and adds to asset ids'):
+            a_resource_name = 'irrelevant resource name'
+            when(self.sysdig_client).find_host_by_mac(self.mac).returns(self.hostname)
+            when(self.gcloud_client).get_resource_name_from_hostname(self.settings.organization(), self.hostname).returns(a_resource_name)
+
+            finding = self.mapper.create_from(fixtures.event())
+
+            expect(finding.resource_name).to(equal(a_resource_name))
+
+        with context('and mac is not found on sysdig'):
+            with it('returns organization as asset id'):
+                when(self.sysdig_client).find_host_by_mac(self.mac).returns(None)
 
                 finding = self.mapper.create_from(fixtures.event())
 
-                expect(finding).to(have_key('asset_ids', [container_image]))
+                expect(finding.resource_name).to(be_the_organization_resource_name())
 
-            with context('and is not an image stored in Google Registry'):
-                with it('returns organization as asset id'):
-                    container_image = 'hub.docker.com'
-                    when(self.sysdig_client).find_container_image_from_container_id(self.container_id).returns(container_image)
-
-                    finding = self.mapper.create_from(fixtures.event())
-
-                    expect(finding).to(have_key('asset_ids', [self.organization]))
-
-        with context('when filling instance id'):
-            with before.each:
-                self.mac = "06:90:90:7f:15:ea"
-                self.hostname = 'any hostname'
-
-            with it('queries google for its id and adds to asset ids'):
-                an_id = 'irrelevant id'
-                instance_image_id = '{}/instance/irrelevant id'.format(self.settings.project())
+        with context('and hostname is not found on google compute'):
+            with it('returns organization as asset id'):
                 when(self.sysdig_client).find_host_by_mac(self.mac).returns(self.hostname)
-                when(self.gcloud_client).get_instance_id_from_hostname(self.settings.project(), self.settings.zone(), self.hostname).returns(an_id)
+                when(self.gcloud_client).get_resource_name_from_hostname(
+                    self.settings.organization(),
+                    self.hostname
+                ).returns(None)
 
                 finding = self.mapper.create_from(fixtures.event())
 
-                expect(finding).to(have_key('asset_ids', [instance_image_id]))
+                expect(finding.resource_name).to(be_the_organization_resource_name())
 
-            with context('and mac is not found on sysdig'):
-                with it('returns organization as asset id'):
-                    when(self.sysdig_client).find_host_by_mac(self.mac).returns(None)
-
-                    finding = self.mapper.create_from(fixtures.event())
-
-                    expect(finding).to(have_key('asset_ids', [self.organization]))
-
-            with context('and hostname is not found on google compute'):
-                with it('returns organization as asset id'):
-                    when(self.sysdig_client)\
-                        .find_host_by_mac(self.mac).returns(self.hostname)
-                    when(self.gcloud_client)\
-                        .get_instance_id_from_hostname(self.settings.project(),
-                                                       self.settings.zone(),
-                                                       self.hostname).returns(None)
-
-                    finding = self.mapper.create_from(fixtures.event())
-
-                    expect(finding).to(have_key('asset_ids', [self.organization]))
-
-    with _context('when receving a host event'):
+    with context('when receving a host event'):
         with before.each:
             self.mac = "42:01:0a:9c:00:06"
 
         with it('includes instance id in asset ids'):
             hostname = "irrelevant hostname"
-            an_id = "irrelevant id"
-            instance_image_id = '{}/instance/{}'.format(self.settings.project(), an_id)
-            when(self.sysdig_client)\
-                .find_host_by_mac(self.mac).returns(hostname)
-
-            when(self.gcloud_client).get_instance_id_from_hostname(self.settings.project(),
-                                                                   self.settings.zone(),
-                                                                   hostname).returns(an_id)
+            a_resource_name = "irrelevant resource_name"
+            when(self.sysdig_client).find_host_by_mac(self.mac).returns(hostname)
+            when(self.gcloud_client).get_resource_name_from_hostname(
+                self.settings.organization(), hostname
+            ).returns(a_resource_name)
 
             finding = self.mapper.create_from(fixtures.event_host())
 
-            expect(finding).to(have_key('asset_ids', [instance_image_id]))
+            expect(finding.resource_name).to(equal(a_resource_name))
 
         with it('does not add any container metadata'):
-            finding = self.mapper.create_from(fixtures.event())
+            finding = self.mapper.create_from(fixtures.event_host())
 
-            expect(finding).to(have_key('properties', have_keys('summary', 'severity', 'rule.type')))
+            expect(finding.container_metadata).to(equal({}))

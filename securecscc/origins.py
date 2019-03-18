@@ -36,7 +36,7 @@ class SysdigSecure(object):
             source=self._settings.source(),
             category=self._sysdig_client.find_policy_by_id(event['policyId']),
             event_time=event_time,
-            #resource_name=self._sysdig_client.project()
+            resource_name=self._resource_name(event),
             url=self._sysdig_url(event_time),
             summary=event['output'],
             severity=event['severity'],
@@ -56,40 +56,19 @@ class SysdigSecure(object):
 
         return self._sysdig_client.find_container_metadata_from_container_id(event['containerId'])
 
-    #def _asset_ids(self, event):
-    #    container_image = self._container_image(event)
-    #    if container_image is not None:
-    #        return [container_image]
+    def _resource_name(self, event):
+        instance_id = self._instance_id(event)
+        if instance_id is not None:
+            return instance_id
 
-    #    instance_id = self._instance_id(event)
-    #    if instance_id is not None:
-    #        return [instance_id]
+        return '//cloudresourcemanager.googleapis.com/{}'.format(self._settings.organization())
 
-    #    return [self._settings.organization()]
+    def _instance_id(self, event):
+        hostname = self._sysdig_client.find_host_by_mac(event['hostMac'])
+        if hostname is not None:
+            return self._gcloud_client.get_resource_name_from_hostname(
+                self._settings.organization(),
+                hostname
+            )
 
-    #def _container_image(self, event):
-    #    if 'containerId' not in event:
-    #        return None
-
-    #    container_image = self._sysdig_client\
-    #        .find_container_image_from_container_id(event['containerId'])
-
-    #    if container_image is not None and container_image.startswith('gcr.io'):
-    #        return container_image
-
-    #    return None
-
-    #def _instance_id(self, event):
-    #    hostname = self._sysdig_client.find_host_by_mac(event['hostMac'])
-    #    if hostname is not None:
-    #        instance_id = self._gcloud_client\
-    #            .get_instance_id_from_hostname(self._settings.project(),
-    #                                           self._settings.zone(),
-    #                                           hostname)
-
-    #        if instance_id is not None:
-    #            return '{}/instance/{}'.format(self._settings.project(),
-    #                                           instance_id)
-
-    #    return None
-
+        return None
