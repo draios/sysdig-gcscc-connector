@@ -13,9 +13,7 @@ doublex-expects = "==0.7.0rc2"
 securecscc = {path = ".",editable = true}
 
 [packages]
-google-cloud = "*"
 sdcclient = "*"
 flask = "*"
 gunicorn = "*"
-google-api-python-client = "*"
 google-cloud-securitycenter = "*"
