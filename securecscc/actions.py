@@ -20,3 +20,16 @@ class CreateCSCCNotificationChannel(object):
         return self._sysdig_client.create_webhook_notification_channel('Google Security Command Center',
                                                                        self._settings.webhook_url(),
                                                                        self._settings.webhook_authentication_token())
+
+
+class CreateSecuritySource(object):
+    def __init__(self, settings, gcloud_client):
+        self._settings = settings
+        self._gcloud_client = gcloud_client
+
+    def run(self, display_name, description):
+        return self._gcloud_client.create_security_source(
+            self._settings.organization(),
+            display_name,
+            description
+        )

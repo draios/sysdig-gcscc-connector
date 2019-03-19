@@ -4,7 +4,7 @@ import json
 import sdcclient
 import requests
 
-from google.cloud import securitycenter
+from google.cloud import securitycenter_v1beta1 as securitycenter
 from google.oauth2 import service_account
 
 
@@ -40,6 +40,12 @@ class GoogleCloudClient(object):
                 return instance.asset.security_center_properties.resource_name
 
         return None
+
+    def create_security_source(self, organization, display_name, description):
+        return self._security_client.create_source(organization, {
+            'display_name': display_name,
+            'description': description
+        })
 
 
 class SysdigSecureClient(object):

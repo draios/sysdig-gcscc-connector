@@ -1,4 +1,4 @@
-from securecscc.actions import CreateFindingFromEvent, CreateCSCCNotificationChannel
+from securecscc.actions import CreateFindingFromEvent, CreateCSCCNotificationChannel, CreateSecuritySource
 from securecscc.infrastructure import SysdigSecureClient, GoogleCloudClient
 from securecscc.application_factory import ApplicationFactory
 from securecscc.settings import Settings
