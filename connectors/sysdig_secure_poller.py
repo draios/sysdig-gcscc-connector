@@ -29,10 +29,10 @@ def main():
     while True:
         logger.info('Querying events from Sysdig Secure')
         for event in sysdig_secure_client.events_happened_on_last_minute():
-            logger.info('Publishing on Google Security Command')
+            logger.info('Publishing to Google Security Command')
             try:
                 result = action.run(event)
-                logger.info(result)
+                logger.info(result.to_dict())
             except Exception as ex:
                 logger.error(ex)
 

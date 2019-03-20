@@ -7,7 +7,6 @@ class CreateFindingFromEvent(object):
     def run(self, event):
         finding = self._origin.create_from(event)
         self._gcloud_client.create_finding(finding)
-
         return finding
 
 
