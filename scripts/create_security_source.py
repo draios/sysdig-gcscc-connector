@@ -23,7 +23,11 @@ With Secure you protect and assure your applications.
 We bring together image scanning, run-time protection, and forensics to identify vulnerabilities, block threats, enforce compliance, and audit activity across your microservices.'''
         )
 
-    print(security_source)
+    if security_source is not None:
+        print('The security source for {} has been successfully created'.format(security_source.display_name))
+        print('Please export its ID before starting to run the integration:')
+        print('')
+        print('export SOURCE_ID="{}"'.format(security_source.name.split('/')[-1]))
 
 
 def _parse_arguments():
