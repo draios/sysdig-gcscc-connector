@@ -1,7 +1,7 @@
 import http
 
 from flask import Flask, jsonify, request
-from flask_utils import webhook_authentication_required, HealthView
+from connectors.flask_helpers import webhook_authentication_required, HealthView
 
 import securecscc
 
@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.add_url_rule('/health', view_func=HealthView.as_view('health'))
 
 factory = securecscc.ApplicationFactory()
-ACTION = factory.create_finding_from_sysdig_secure_event_action()
+ACTION = factory.create_finding_from_falco_alarm_action()
 
 settings = factory.settings()
 
@@ -18,11 +18,10 @@ settings = factory.settings()
 @webhook_authentication_required(settings.webhook_authentication_token())
 def create_finding():
     raw = request.get_json()
-    events = raw['entities'][0]['policyEvents']
 
-    result = [ACTION.run(event) for event in events]
+    finding = ACTION.run(raw)
 
-    return jsonify(result), http.client.CREATED
+    return jsonify(finding), http.client.CREATED
 
 
 if __name__ == '__main__':
