@@ -1,15 +1,12 @@
-FROM python:3-stretch
+FROM python:3-slim
 
 RUN pip install pipenv
 
 WORKDIR /app
 
-ADD Pipfile /app/Pipfile
-ADD Pipfile.lock /app/Pipfile.lock
-RUN pipenv install --system --deploy
-
 ADD . /app
+RUN pipenv install --system --deploy
 
 EXPOSE 8080
 ENTRYPOINT ["./docker-entrypoint.sh"]
-CMD ["webhook_server"]
+CMD ["sysdig_secure_webhook"]

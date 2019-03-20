@@ -10,10 +10,10 @@ python_version = "3"
 mamba = "*"
 expects = "*"
 doublex-expects = "==0.7.0rc2"
-securecscc = {path = ".",editable = true}
 
 [packages]
 sdcclient = "*"
 flask = "*"
 gunicorn = "*"
 google-cloud-securitycenter = "*"
+securecscc = {path = ".",editable = true}
