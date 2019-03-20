@@ -33,6 +33,9 @@ As this can be a bit cumbersome, we added an script which automates this step:
 In order to execute this script, you will need the $ORG_ID and the $PROJECT_ID
 environment variables. You can get this values directly form Google Cloud Console.
 
+And finally, this will create a file called **controlcenter-sa.json** in your
+filesystem (if you are using the settings provided sourceable file).
+
 ### Creating a Security Source on Google Cloud Security Center
 
 Once we have the service account, we can go to this step. In the new version of
