@@ -45,10 +45,13 @@ class Finding(object):
                 source_properties[name] = \
                     struct_pb2.Value(string_value=str(value))
 
-        for key, value in self.container_metadata.items():
-            source_properties[self._replace_dots(name)] = struct_pb2.Value(string_value=str(value))
+        self._merge_container_metadata(source_properties)
 
         return source_properties
+
+    def _merge_container_metadata(self, source_properties):
+        for key, value in self.container_metadata.items():
+            source_properties[self._replace_dots(key)] = struct_pb2.Value(string_value=str(value))
 
     def _replace_dots(self, value):
         return value.replace('.', '_')
