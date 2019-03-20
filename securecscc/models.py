@@ -46,7 +46,7 @@ class Finding(object):
                     struct_pb2.Value(string_value=str(value))
 
         for key, value in self.container_metadata.items():
-            source_properties[name] = struct_pb2.Value(string_value=str(value))
+            source_properties[self._replace_dots(name)] = struct_pb2.Value(string_value=str(value))
 
         return source_properties
 
