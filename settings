@@ -1,0 +1,11 @@
+export ORG_ID=""
+export PROJECT_ID=""
+export SOURCE_ID=""
+export SERVICE_ACCOUNT="controlcenter-sa"
+export KEY_LOCATION=$PWD/$SERVICE_ACCOUNT.json
+export SECURITY_SERVICE_ACCOUNT_INFO="$(cat $PWD/$SERVICE_ACCOUNT.json)"
+
+export WEBHOOK_URL=""
+export WEBHOOK_AUTHENTICATION_TOKEN=""
+
+export SYSDIG_TOKEN=""

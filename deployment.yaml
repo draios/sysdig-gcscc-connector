@@ -6,8 +6,7 @@ metadata:
 data:
   org_id: "534901558763"
   project_id: cscc544401558763
-  compute_project_id : arboreal-logic-197806
-  compute_zone: europe-west3-a
+  source_id: "534932342125324852345265233"
   webhook_url: https://arboreal-logic-198306.appspot.com/events
 ---
 kind: Secret
@@ -18,7 +17,6 @@ type: Opaque
 data:
   sysdig_token: YzZmNmFmODYtOTNhNS00MThiLTlkNzYtMTIyOWZjZDkyMzc4Cg==
   webhook_authentication_token: N2E3OTQxNmVkNGQzNzc2Yjc0ZmNjMDcwMjc1ZWNlMjA4ZWVlZjI5Zgo=
-  compute_service_account_info: J3sidHlwZSI6ICJzZXJ2aWNlX2FjY291bnQiLCAicHJvamVjdF9pZCI6ICIiLCAicHJpdmF0ZV9rZXlfaWQiOiAiIiwgInByaXZhdGVfa2V5IjogIi0tLS0tYmVnaW4gcHJpdmF0ZSBrZXktLS0tLVxcbi0tLS0tZW5kIHByaXZhdGUga2V5LS0tLS1cbiIsICJjbGllbnRfZW1haWwiOiAiIiwgImNsaWVudF9pZCI6ICIiLCAiYXV0aF91cmkiOiAiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tL28vb2F1dGgyL2F1dGgiLCAidG9rZW5fdXJpIjogImh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbS9vL29hdXRoMi90b2tlbiIsICJhdXRoX3Byb3ZpZGVyX3g1MDlfY2VydF91cmwiOiAiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vb2F1dGgyL3YxL2NlcnRzIiwgImNsaWVudF94NTA5X2NlcnRfdXJsIjogIiJ9Jwo=
   security_service_account_info: J3sidHlwZSI6ICJzZXJ2aWNlX2FjY291bnQiLCAicHJvamVjdF9pZCI6ICIiLCAicHJpdmF0ZV9rZXlfaWQiOiAiIiwgInByaXZhdGVfa2V5IjogIi0tLS0tQkVHSU4gUFJJVkFURSBLRVktLS0tLVxcbi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS1cbiIsICJjbGllbnRfZW1haWwiOiAiIiwgImNsaWVudF9pZCI6ICIiLCAiYXV0aF91cmkiOiAiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tL28vb2F1dGgyL2F1dGgiLCAidG9rZW5fdXJpIjogImh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbS9vL29hdXRoMi90b2tlbiIsICJhdXRoX3Byb3ZpZGVyX3g1MDlfY2VydF91cmwiOiAiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vb2F1dGgyL3YxL2NlcnRzIiwgImNsaWVudF94NTA5X2NlcnRfdXJsIjogIiJ9Jwo=
 ---
 kind: Deployment
@@ -40,7 +38,8 @@ spec:
       containers:
         - name: sysdig-gcscc-connector
           image: sysdig/sysdig-gcscc-connector
-          args: [ "falco_server" ]
+          # You can deploy instead the sysdig_secure_webhook
+          args: [ "falco_webhook" ]
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -55,36 +54,16 @@ spec:
                 configMapKeyRef:
                   name: sysdig-gcscc-connector
                   key: org_id
-            - name: PROJECT_ID
+            - name: SOURCE_ID
               valueFrom:
                 configMapKeyRef:
                   name: sysdig-gcscc-connector
-                  key: project_id
+                  key: source_id
             - name: SECURITY_SERVICE_ACCOUNT_INFO
               valueFrom:
                 secretKeyRef:
                   name: sysdig-gcscc-connector
                   key: security_service_account_info
-            - name: COMPUTE_PROJECT_ID
-              valueFrom:
-                configMapKeyRef:
-                  name: sysdig-gcscc-connector
-                  key: compute_project_id
-            - name: COMPUTE_ZONE
-              valueFrom:
-                configMapKeyRef:
-                  name: sysdig-gcscc-connector
-                  key: compute_zone
-            - name: COMPUTE_SERVICE_ACCOUNT_INFO
-              valueFrom:
-                secretKeyRef:
-                  name: sysdig-gcscc-connector
-                  key: compute_service_account_info
-            - name: WEBHOOK_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: sysdig-gcscc-connector
-                  key: webhook_url
             - name: WEBHOOK_AUTHENTICATION_TOKEN
               valueFrom:
                 secretKeyRef:
