@@ -4,6 +4,7 @@ import json
 import sdcclient
 import requests
 
+from google.api_core import exceptions
 from google.cloud import securitycenter_v1beta1 as securitycenter
 from google.oauth2 import service_account
 
@@ -15,9 +16,15 @@ class GoogleCloudClient(object):
         self._credentials = credentials
 
     def create_finding(self, finding):
-        return self._security_client.create_finding(finding.source,
-                                                    finding.finding_id,
-                                                    finding.to_google_cloud_security_center())
+        try:
+            self._security_client.create_finding(finding.source,
+                                                 finding.finding_id,
+                                                 finding.to_google_cloud_security_center())
+        except exceptions.AlreadyExists:
+            # Sometimes Secure sends the same Finding twice, and GCSCC returns
+            # a 409 if we are trying to create the same finding twice. Just
+            # ignore it
+            pass
 
     @property
     @lru_cache(maxsize=1)
