@@ -22,8 +22,7 @@ class ApplicationFactory(object):
 
     @lru_cache(maxsize=1)
     def create_cscc_notification_channel_action(self):
-        return CreateCSCCNotificationChannel(self.settings(),
-                                             self.sysdig_secure_client())
+        return CreateCSCCNotificationChannel(self.sysdig_secure_client())
 
     def create_security_source_action(self):
         return CreateSecuritySource(self.settings(),

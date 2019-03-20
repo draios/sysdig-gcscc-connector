@@ -14,11 +14,6 @@ ACTION = factory.create_finding_from_sysdig_secure_event_action()
 settings = factory.settings()
 
 
-@app.before_first_request
-def setup_webhook():
-    factory.create_cscc_notification_channel_action().run()
-
-
 @app.route('/events', methods=['POST'])
 @webhook_authentication_required(settings.webhook_authentication_token())
 def create_finding():

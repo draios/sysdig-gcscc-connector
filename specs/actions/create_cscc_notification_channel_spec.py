@@ -10,11 +10,13 @@ with description(securecscc.CreateCSCCNotificationChannel) as self:
     with it('creates a notification channel in Sysdig Secure'):
         settings = securecscc.Settings()
         sysdig_client = Spy(securecscc.SysdigSecureClient)
-        action = securecscc.CreateCSCCNotificationChannel(settings, sysdig_client)
+        action = securecscc.CreateCSCCNotificationChannel(sysdig_client)
+        webhook_url = 'irrelevant webhook url'
+        webhook_authentication_token = 'irrelevant webhook authentication token'
 
-        action.run()
+        action.run(webhook_url, webhook_authentication_token)
 
         expect(sysdig_client.create_webhook_notification_channel).\
             to(have_been_called_with('Google Security Command Center',
-                                     settings.webhook_url(),
-                                     settings.webhook_authentication_token()))
+                                     webhook_url,
+                                     webhook_authentication_token))

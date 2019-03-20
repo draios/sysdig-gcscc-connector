@@ -12,14 +12,15 @@ class CreateFindingFromEvent(object):
 
 
 class CreateCSCCNotificationChannel(object):
-    def __init__(self, settings, sysdig_client):
-        self._settings = settings
+    def __init__(self, sysdig_client):
         self._sysdig_client = sysdig_client
 
-    def run(self):
-        return self._sysdig_client.create_webhook_notification_channel('Google Security Command Center',
-                                                                       self._settings.webhook_url(),
-                                                                       self._settings.webhook_authentication_token())
+    def run(self, webhook_url, webhook_authentication_token):
+        return self._sysdig_client.create_webhook_notification_channel(
+            'Google Security Command Center',
+            webhook_url,
+            webhook_authentication_token
+        )
 
 
 class CreateSecuritySource(object):
