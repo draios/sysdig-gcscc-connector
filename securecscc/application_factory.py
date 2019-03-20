@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from securecscc.actions import CreateFindingFromEvent, CreateCSCCNotificationChannel
+from securecscc.actions import CreateFindingFromEvent, CreateCSCCNotificationChannel, CreateSecuritySource
 from securecscc.infrastructure import SysdigSecureClient, GoogleCloudClient
 from securecscc.settings import Settings
 from securecscc.credentials import Credentials
@@ -24,6 +24,10 @@ class ApplicationFactory(object):
     def create_cscc_notification_channel_action(self):
         return CreateCSCCNotificationChannel(self.settings(),
                                              self.sysdig_secure_client())
+
+    def create_security_source_action(self):
+        return CreateSecuritySource(self.settings(),
+                                    self.google_cloud_client())
 
     @lru_cache(maxsize=1)
     def sysdig_secure_client(self):

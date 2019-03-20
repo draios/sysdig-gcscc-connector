@@ -2,9 +2,6 @@ import os
 
 
 class Settings(object):
-    def source_id(self):
-        return 'SYSDIG'
-
     def organization(self):
         return 'organizations/{}'.format(os.environ['ORG_ID'])
 
