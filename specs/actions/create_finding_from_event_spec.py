@@ -20,7 +20,12 @@ with description(securecscc.CreateFindingFromEvent) as self:
                                                         self.origin)
 
     with it('sends parsed finding to Google Cloud Security Command Center'):
-        finding = 'irrelevant finding'
+        finding = securecscc.Finding(
+            finding_id='irrelevant finding id',
+            source='irrelevant source',
+            category='irrelevant category',
+            event_time='irrelevant event_time',
+        )
         when(self.origin).create_from(fixtures.event()).returns(finding)
 
         self.action.run(fixtures.event())

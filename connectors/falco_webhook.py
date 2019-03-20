@@ -21,7 +21,7 @@ def create_finding():
 
     finding = ACTION.run(raw)
 
-    return jsonify(finding), http.client.CREATED
+    return jsonify(finding.to_dict()), http.client.CREATED
 
 
 if __name__ == '__main__':

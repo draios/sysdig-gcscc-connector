@@ -15,4 +15,4 @@ class Settings(object):
         return os.environ['WEBHOOK_URL']
 
     def webhook_authentication_token(self):
-        return 'CSCC {}'.format(os.environ['WEBHOOK_AUTHENTICATION_TOKEN'])
+        return os.environ['WEBHOOK_AUTHENTICATION_TOKEN']

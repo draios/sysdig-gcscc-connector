@@ -20,7 +20,7 @@ def create_finding():
     raw = request.get_json()
     events = raw['entities'][0]['policyEvents']
 
-    result = [ACTION.run(event) for event in events]
+    result = [ACTION.run(event).to_dict() for event in events]
 
     return jsonify(result), http.client.CREATED
 

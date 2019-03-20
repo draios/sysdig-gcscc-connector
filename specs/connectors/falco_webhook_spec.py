@@ -29,6 +29,14 @@ with description('Falco HTTP Webhook') as self:
         with before.each:
             falco_webhook.ACTION = Spy(securecscc.CreateFindingFromEvent)
 
+            self.finding = securecscc.Finding(
+                finding_id='irrelevant finding id',
+                source='irrelevant source',
+                category='irrelevant category',
+                event_time='irrelevant event_time',
+            )
+            when(falco_webhook.ACTION).run(fixtures.event_falco()).returns(self.finding)
+
         with it('returns a 201'):
             result = self.app.post('/events',
                                    data=fixtures.payload_from_falco(),
@@ -38,15 +46,13 @@ with description('Falco HTTP Webhook') as self:
             expect(result.status_code).to(equal(http.client.CREATED))
 
         with it('returns new created finding'):
-            finding = {'id': 'irrelevant id'}
-            when(falco_webhook.ACTION).run(fixtures.event_falco()).returns(finding)
-
             result = self.app.post('/events',
                                    data=fixtures.payload_from_falco(),
                                    content_type='application/json',
                                    headers=self.authorization_headers)
 
-            expect(json.loads(result.data)).to(equal(finding))
+            expect(json.loads(result.data))\
+                .to(equal(self.finding.to_dict()))
 
         with context('when authentication header is not present'):
             with it('returns a 403'):
