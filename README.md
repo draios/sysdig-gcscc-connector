@@ -41,7 +41,7 @@ filesystem (if you are using the settings provided sourceable file).
 Once we have the service account, we can go to this step. In the new version of
 Google Cloud Security Control Center, you will need to set up the **Security Source**.
 
-So, another time, just for making your experience better we crafted an script for doing this:
+To make your experience better, we crafted a script for doing this:
 
 ```shell
 docker run \
