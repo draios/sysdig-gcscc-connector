@@ -1,0 +1,33 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: sysdig-secure-poller
+  labels:
+   name: sysdig-secure-poller
+   app: sysdig-secure-poller
+spec:
+  containers:
+    - name: sysdig-secure-poller
+      image: sysdig/sysdig-gcscc-connector
+      args: [ "sysdig_secure_poller" ]
+      env:
+        - name: SYSDIG_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: sysdig-gcscc-connector
+              key: sysdig_token
+        - name: ORG_ID
+          valueFrom:
+            configMapKeyRef:
+              name: sysdig-gcscc-connector
+              key: org_id
+        - name: SOURCE_ID
+          valueFrom:
+            configMapKeyRef:
+              name: sysdig-gcscc-connector
+              key: source_id
+        - name: SECURITY_SERVICE_ACCOUNT_INFO
+          valueFrom:
+            secretKeyRef:
+              name: sysdig-gcscc-connector
+              key: security_service_account_info
