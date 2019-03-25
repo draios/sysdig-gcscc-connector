@@ -63,9 +63,8 @@ class SysdigSecureClient(object):
         self._credentials = credentials
         self._policies = {}
 
-    def events_happened_on_last_minute(self):
-        result = self._sysdig_secure_client\
-            .get_policy_events_duration(self._MINUTE)
+    def events_happened_on_last(self, duration):
+        result = self._sysdig_secure_client.get_policy_events_duration(duration)
 
         return result[1]['data']['policyEvents']
 

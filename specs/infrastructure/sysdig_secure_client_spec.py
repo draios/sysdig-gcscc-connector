@@ -8,9 +8,10 @@ with description(securecscc.SysdigSecureClient) as self:
     with before.all:
         self.client = securecscc.SysdigSecureClient(securecscc.Credentials())
 
-    with context('when retrieving events happened on last minute'):
+    with context('when retrieving events happened on last duration'):
         with before.all:
-            self.events = self.client.events_happened_on_last_minute()
+            DAY = 60 * 60 * 24
+            self.events = self.client.events_happened_on_last(30 * DAY)
 
         with it('returns more than 0 events'):
             expect(self.events).to(have_length(be_above(0)))
