@@ -2,7 +2,8 @@
 set -e
 
 if [ "$1" = 'sysdig_secure_poller' ]; then
-    exec python ./connectors/sysdig_secure_poller.py
+    shift
+    exec python ./connectors/sysdig_secure_poller.py "$@"
 fi
 
 if [ "$1" = 'sysdig_secure_webhook' ]; then
