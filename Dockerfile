@@ -1,10 +1,10 @@
 FROM python:3-slim
 
-RUN pip install pipenv
+RUN pip install pipenv==2018.11.26
 
 WORKDIR /app
 
-ADD . /app
+COPY . /app
 RUN pipenv install --system --deploy
 
 EXPOSE 8080
