@@ -24,7 +24,7 @@ with description(origins.SysdigSecure) as self:
         with it('uses id from security event'):
             finding = self.mapper.create_from(fixtures.event())
 
-            expect(finding.finding_id).to(equal('530491201430929408'))
+            expect(finding.finding_id).to(equal('721918015150567424'))
 
         with it('uses a shorter value than allowed by Google'):
             finding = self.mapper.create_from(fixtures.event())
@@ -39,11 +39,10 @@ with description(origins.SysdigSecure) as self:
     with it('uses only seconds from event time'):
         finding = self.mapper.create_from(fixtures.event())
 
-        expect(finding.event_time).to(equal(1523007311))
+        expect(finding.event_time).to(equal(1568647020))
 
     with it('retrieves category name from sysdig client'):
-        category_name = 'a category name'
-        when(self.sysdig_client).find_policy_by_id(59).returns(category_name)
+        category_name = 'Write below root'
 
         finding = self.mapper.create_from(fixtures.event())
 
@@ -58,10 +57,10 @@ with description(origins.SysdigSecure) as self:
         with it('extracts url path from security event'):
             finding = self.mapper.create_from(fixtures.event())
 
-            expect(finding.url).to(end_with('/#/events/f:1523007251,t:1523007371/*/*?viewAs=list'))
+            expect(finding.url).to(end_with('/#/events/f:1568646960,t:1568647080/*/*?viewAs=list'))
 
     with it('adds output'):
-        output = "Sensitive file opened for reading by non-trusted program (user=root program=ftest command=ftest -i 25200 -a exfiltration file=/etc/shadow parent=docker-containe gparent=docker-containe ggparent=dockerd gggparent=systemd)"
+        output = "File below / or /root opened for writing (user=root command=touch /foobarbaz parent=bash file=/foobarbaz program=touch container_id=c8c4d64fe7a5 image=nginx)"
 
         finding = self.mapper.create_from(fixtures.event())
 
@@ -78,7 +77,7 @@ with description(origins.SysdigSecure) as self:
         expect(finding.rule_type).to(equal('RULE_TYPE_FALCO'))
 
     with it('retrieves container metadata'):
-        container_id = '57c1820a87f1'
+        container_id = 'c8c4d64fe7a5'
         when(self.sysdig_client).find_container_metadata_from_container_id(container_id).returns({'container.stuff': 'FOO'})
 
         finding = self.mapper.create_from(fixtures.event())
@@ -87,7 +86,7 @@ with description(origins.SysdigSecure) as self:
 
     with context('when choosing the resource name'):
         with before.each:
-            self.mac = "06:90:90:7f:15:ea"
+            self.mac = "42:01:0a:9c:0f:ce"
             self.hostname = 'any hostname'
 
         with it('queries google for its resource_name and adds to asset ids'):

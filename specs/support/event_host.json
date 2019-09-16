@@ -49,6 +49,7 @@
     null,
     null
   ],
+  "name": "Write below root",
   "output": "File below a known binary directory opened for writing (user=root command=touch baz file=/usr/bin/baz parent=sudo pcmdline=sudo touch baz gparent=bash)",
   "policyId": 3121,
   "ruleSubtype": null,

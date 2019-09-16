@@ -10,6 +10,7 @@ python_version = "3"
 mamba = "*"
 expects = "*"
 doublex-expects = "==0.7.0rc2"
+securecscc = {editable = true,path = "."}
 
 [packages]
 sdcclient = "*"

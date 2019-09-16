@@ -61,7 +61,6 @@ class SysdigSecureClient(object):
 
     def __init__(self, credentials):
         self._credentials = credentials
-        self._policies = {}
 
     def events_happened_on_last(self, duration):
         result = self._sysdig_secure_client.get_policy_events_duration(duration)
@@ -72,14 +71,6 @@ class SysdigSecureClient(object):
     @lru_cache(maxsize=1)
     def _sysdig_secure_client(self):
         return sdcclient.SdSecureClient(self._credentials.sysdig_token())
-
-    def find_policy_by_id(self, policy_id):
-        if self._policies == {}:
-            policies = self._sysdig_secure_client.list_policies()
-            for policy in policies[1]['policies']:
-                self._policies[policy['id']] = policy['name']
-
-        return self._policies[policy_id]
 
     def find_host_by_mac(self, mac):
         metrics = [{"id": "host.mac"}, {"id": "host.hostName"}]

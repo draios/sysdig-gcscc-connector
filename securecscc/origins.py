@@ -34,7 +34,7 @@ class SysdigSecure(object):
         return models.Finding(
             finding_id=event['id'],
             source=self._settings.source(),
-            category=self._sysdig_client.find_policy_by_id(event['policyId']),
+            category=event['name'],
             event_time=event_time,
             resource_name=self._resource_name(event),
             url=self._sysdig_url(event_time),
