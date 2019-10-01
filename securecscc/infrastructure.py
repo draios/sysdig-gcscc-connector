@@ -95,7 +95,7 @@ class SysdigSecureClient(object):
             for raw in response[1]['data']
         }
 
-        return metadata.get(container_id)
+        return metadata.get(container_id, {})
 
     def _container_metadata_metrics(self):
         return [{"id": "container.id"},
