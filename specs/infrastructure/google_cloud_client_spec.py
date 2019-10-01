@@ -28,14 +28,14 @@ with description(securecscc.GoogleCloudClient) as self:
         return int((dt - datetime.utcfromtimestamp(0)).total_seconds())
 
     with it('retrieves id from hostname'):
-        hostname = 'gke-sysdig-work-default-pool-a1022875-j81z'
+        hostname = 'gke-sysdig-work-default-pool-0b1474b1-hxz1'
 
         instance_id = self.client.get_resource_name_from_hostname(
             self.settings.organization(),
             hostname
         )
 
-        expect(instance_id).to(equal('//compute.googleapis.com/projects/sysdig-204815/zones/europe-west3-a/instances/96321670362563295'))
+        expect(instance_id).to(equal('//compute.googleapis.com/projects/sysdig-204815/zones/europe-west3-a/instances/4941655120891780947'))
 
     with it('creates the security source'):
         display_name = 'source-{}'.format(self.random_string())
