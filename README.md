@@ -83,7 +83,7 @@ docker run \
   -e ORG_ID=$ORG_ID \
   -e SOURCE_ID=$SOURCE_ID \
   -e SECURITY_SERVICE_ACCOUNT_INFO=$SECURITY_SERVICE_ACCOUNT_INFO \
-  sysdig/sysdig-gcscc-connector sysdig_secure_polling
+  sysdig/sysdig-gcscc-connector sysdig_secure_poller
 ```
 
 ### Sysdig Secure Webhook
