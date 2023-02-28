@@ -1,6 +1,5 @@
-# Sysdig integration with Google Security Command Center
-
-Read more on http://sysdig.com/blog/kubernetes-security-for-google-cloud-security-command-center/.
+# :no_entry: This repository is [DEPRECATED] and will be archived. 
+To read more about this integration please go to https://docs.sysdig.com/en/docs/sysdig-secure/secure-events/event-forwarding/forwarding-to-google-security-command-center
 
 ## Before starting
 
